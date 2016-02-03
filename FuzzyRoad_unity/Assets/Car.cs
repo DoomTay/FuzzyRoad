@@ -3,31 +3,38 @@ using System.Collections;
 
 public class Car : MonoBehaviour {
 
-	public Rigidbody[] wheels;
-	public Transform[] frontWheels;
+	public WheelCollider[] wheels;
+	public WheelCollider[] frontWheels;
 
 	public float speed;
 
 	// Use this for initialization
 	void Start () {
-		foreach(Rigidbody wheel in wheels)
-		{
-			wheel.maxAngularVelocity = Mathf.Infinity;
-		}
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		print (1000 * speed * Input.GetAxis ("Acceleration"));
-		foreach(Rigidbody wheel in wheels)
+		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
+		foreach(WheelCollider wheel in wheels)
 		{
-			wheel.AddTorque(transform.right * 1000 * speed * Input.GetAxis ("Acceleration"));
+			wheel.motorTorque = speed * 100 * Input.GetAxis("Acceleration");
+			if(oppositeSides(transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis("Acceleration")))
+			{
+				print ("Braking");
+				wheel.brakeTorque = 10000 * speed;
+			}
+			else wheel.brakeTorque = 0;
 		}
 
-		foreach(Transform frontWheel in frontWheels)
+		foreach(WheelCollider frontWheel in frontWheels)
 		{
-			frontWheel.rotation = (transform.rotation * Quaternion.AngleAxis(Input.GetAxis ("Steering") * 40, Vector3.up));
+			frontWheel.steerAngle = 30 * Input.GetAxis("Steering");
 		}
+	}
+
+	bool oppositeSides(float a, float b)
+	{
+		return (a > 0 && b < 0) || (a < 0 && b > 0);
 	}
 }
