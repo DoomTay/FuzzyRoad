@@ -4,6 +4,7 @@ using System.Collections;
 public class Car : MonoBehaviour {
 
 	public Rigidbody[] wheels;
+	public Transform[] frontWheels;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +19,11 @@ public class Car : MonoBehaviour {
 			{
 				wheel.AddTorque(transform.right * 1000 * Input.GetAxis ("Acceleration"));
 			}
+		}
+
+		foreach(Transform frontWheel in frontWheels)
+		{
+			frontWheel.rotation = (transform.rotation * Quaternion.AngleAxis(Input.GetAxis ("Steering") * 40, Vector3.up));
 		}
 	}
 }
