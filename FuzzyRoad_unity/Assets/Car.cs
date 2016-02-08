@@ -6,6 +6,8 @@ public class Car : MonoBehaviour {
 	public WheelCollider[] wheels;
 	public WheelCollider[] frontWheels;
 
+    public int health = 100;
+    int damage = 3;
 	public float speed;
 
 	// Use this for initialization
@@ -33,6 +35,10 @@ public class Car : MonoBehaviour {
 		}
 	}
 
+    void OnCollisuonEnter(Collision _collusion)
+    {
+
+    }
 	bool oppositeSides(float a, float b)
 	{
 		return (a > 0 && b < 0) || (a < 0 && b > 0);
