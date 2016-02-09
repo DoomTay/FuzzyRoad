@@ -17,7 +17,7 @@ public class Car : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
+//		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
 		foreach(WheelCollider wheel in wheels)
 		{
 			wheel.motorTorque = speed * 100 * Input.GetAxis("Acceleration");

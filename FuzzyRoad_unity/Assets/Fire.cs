@@ -25,12 +25,12 @@ public class Fire : MonoBehaviour {
         {
 
             Debug.Log("HIT");
-            if (Input.GetKeyDown("Fire1"))
+            if (Input.GetButtonDown("Fire1"))
             {
                 print("Shot fired");
             }
 
-            if (Input.GetKeyDown("Fire1") && hit.collider.gameObject.name == "Enemy")
+            if (Input.GetButtonDown("Fire1") && hit.collider.gameObject.name == "Enemy")
             {
                 print("Enemy should be killed");                //shot enemy variable is passed to the enemy class, killing the enemy.
                 shot_enemy = true;
