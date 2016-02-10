@@ -5,6 +5,7 @@ public class Car : MonoBehaviour {
 
 	public WheelCollider[] wheels;
 	public WheelCollider[] frontWheels;
+	public Camera camera;
 
     public int health = 100;
     int damage = 3;
@@ -33,6 +34,9 @@ public class Car : MonoBehaviour {
 		{
 			frontWheel.steerAngle = 30 * Input.GetAxis("Steering");
 		}
+
+		camera.transform.position -= (camera.transform.position - (transform.position + transform.forward * -5 + transform.up * 2)) * 0.25f;
+		camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, transform.rotation, 0.15f);
 	}
 
     void OnCollisuonEnter(Collision _collusion)
@@ -41,6 +45,6 @@ public class Car : MonoBehaviour {
     }
 	bool oppositeSides(float a, float b)
 	{
-		return (a > 0 && b < 0) || (a < 0 && b > 0);
+		return Mathf.Sign (a) != Mathf.Sign (b);
 	}
 }
