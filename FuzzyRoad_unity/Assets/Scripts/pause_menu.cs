@@ -4,14 +4,15 @@ using System.Collections;
 
 public class pause_menu : MonoBehaviour {
 
-	public Canvas pauseMenu;
-	public Button continueText;
-	public Button exitText;
+	//public Canvas pauseMenu;
+	public GameObject continueText;
+	public GameObject exitText;
 
 	// Use this for initialization
 	void Start () {
 		
-		pauseMenu.enabled = false;
+		continueText.SetActive(false);
+		exitText.SetActive(false);
 
 	}
 	
@@ -22,7 +23,9 @@ public class pause_menu : MonoBehaviour {
 
 				
 				Time.timeScale = 0;
-				pauseMenu.enabled = true;
+				continueText.SetActive(true);
+				exitText.SetActive(true);
+				Debug.Log ("should show pause menu");
 			}
 		}
 
@@ -30,7 +33,8 @@ public class pause_menu : MonoBehaviour {
 	public void UnPause(){
 
 		Time.timeScale = 1;
-		pauseMenu.enabled = false;
+		continueText.SetActive(false);
+		exitText.SetActive(false);
 
 		}
 
