@@ -8,31 +8,34 @@ public class Car : MonoBehaviour {
 	public Camera camera;
 	public int playerID = 1;
 
-
+	private Transform respawnPoint;
 
     public int health = 100;
     int damage = 3;
 	public float speed;
 
-	public Rigidbody projectile;
+	public GameObject projectile;
 	public Transform Spawnpoint;
-	public GameObject Bullet_Clone;
-	
+
 	private const float FIRE_GUN_COOLDOWN = .3f;
 	private float fireGunTimer;
 
 	// Use this for initialization
 	void Start () {
-
+		GetComponent<Rigidbody>().centerOfMass += new Vector3(0, 0, 1.0f);
+		respawnPoint = transform;
+		//respawnPoint.position = transform.position;
+		//respawnPoint.rotation = transform.rotation;
+		print (respawnPoint.position + "," + respawnPoint.rotation);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 //		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
-		if (!inAir ()) {
+		if (!InAir ()) {
 			foreach (WheelCollider wheel in wheels) {
 				wheel.motorTorque = speed * 100 * Input.GetAxis ("Acceleration_P" + playerID);
-				if (oppositeSides (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis ("Acceleration"))) {
+				if (OppositeSides (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis ("Acceleration_P" + playerID))) {
 					print ("Braking_P" + playerID);
 					wheel.brakeTorque = 10000 * speed;
 				} else
@@ -43,18 +46,18 @@ public class Car : MonoBehaviour {
 				frontWheel.steerAngle = 30 * Input.GetAxis ("Steering_P" + playerID);
 			}
 		} else {
-			GetComponent<Rigidbody>().AddTorque(transform.forward * GetComponent<Rigidbody>().mass * Input.GetAxis ("Steering") * 100);
-			GetComponent<Rigidbody>().AddTorque(transform.right * GetComponent<Rigidbody>().mass * Input.GetAxis ("Acceleration") * 100);
+			GetComponent<Rigidbody>().AddTorque(transform.forward * GetComponent<Rigidbody>().mass * Input.GetAxis ("Steering_P" + playerID) * 100);
+			GetComponent<Rigidbody>().AddTorque(transform.right * GetComponent<Rigidbody>().mass * Input.GetAxis ("Acceleration_P" + playerID) * 100);
 		}
 
 		fireGunTimer -= Time.deltaTime;
 		
 		if (fireGunTimer <= 0) {
 			if (Input.GetButtonDown ("Fire_P" + playerID)) {
-				Rigidbody clone;
-				clone = (Rigidbody)Instantiate (projectile, Spawnpoint.position, projectile.rotation);
+				GameObject clone;
+				clone = (GameObject)Instantiate (projectile, Spawnpoint.position + transform.forward * 5, projectile.transform.rotation);
 				
-				clone.velocity = Spawnpoint.TransformDirection (Vector3.forward * 80);
+				clone.GetComponent<Rigidbody>().velocity = Spawnpoint.TransformDirection (Vector3.forward * 80);
 				
 				fireGunTimer = FIRE_GUN_COOLDOWN;
 				
@@ -71,12 +74,20 @@ public class Car : MonoBehaviour {
     {
 
     }
-	bool oppositeSides(float a, float b)
+	bool OppositeSides(float a, float b)
 	{
-		return Mathf.Sign (a) != Mathf.Sign (b);
+		return (a > 0 && b < 0) || (a < 0 && b > 0);
 	}
 
-	bool inAir()
+	public void Damage(int amount)
+	{
+		health -= amount;
+		if (health < 0) {
+			Destroy(gameObject);
+		}
+	}
+
+	bool InAir()
 	{
 		foreach (WheelCollider wheel in wheels) {
 			WheelHit hit;
