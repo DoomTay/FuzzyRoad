@@ -30,12 +30,12 @@ public class shooting : MonoBehaviour {
 				Rigidbody clone;
 				clone = (Rigidbody)Instantiate(projectile, Spawnpoint.position, projectile.rotation);
 
-				clone.velocity = Spawnpoint.TransformDirection (Vector3.forward*20);
+				clone.velocity = Spawnpoint.TransformDirection (Vector3.forward*80);
 
 				fireGunTimer = FIRE_GUN_COOLDOWN;
 
 				//Destroy(projectile, 2);
-				Destroy(Bullet_Clone, 2);
+				//Destroy(Bullet_Clone, 2);
 		}
 	}
 }

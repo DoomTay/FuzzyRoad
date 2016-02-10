@@ -13,6 +13,8 @@ public class ui_timer : MonoBehaviour {
 
 
 	void Update() {
+
+		// TIMER FOR GAME 
 		time += Time.deltaTime;
 
 		minutes = time / 60; //Divide the guiTime by sixty to get the minutes.
