@@ -6,6 +6,7 @@ public class shooting : MonoBehaviour {
 	public Rigidbody projectile;
 	public Transform Spawnpoint;
 	public GameObject Bullet_Clone;
+	public int playerID;
 
 	private const float FIRE_GUN_COOLDOWN = .3f;
 	private float fireGunTimer;
@@ -26,7 +27,7 @@ public class shooting : MonoBehaviour {
 		fireGunTimer -= Time.deltaTime;
 
 		if(fireGunTimer <= 0){
-			if(Input.GetButtonDown("Fire1")){
+			if(Input.GetButtonDown("Fire_P" + playerID)){
 				Rigidbody clone;
 				clone = (Rigidbody)Instantiate(projectile, Spawnpoint.position, projectile.rotation);
 
