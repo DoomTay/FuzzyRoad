@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Car : MonoBehaviour {
 
@@ -7,6 +8,7 @@ public class Car : MonoBehaviour {
 	public WheelCollider[] frontWheels;
 	public Camera camera;
 	public int playerID = 1;
+	public Slider healthBar;
 
 	private Transform respawnPoint;
 
@@ -27,11 +29,14 @@ public class Car : MonoBehaviour {
 		//respawnPoint.position = transform.position;
 		//respawnPoint.rotation = transform.rotation;
 		print (respawnPoint.position + "," + respawnPoint.rotation);
+		healthBar.maxValue = health;
+		healthBar.value = health;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 //		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
+		healthBar.value = health;
 		if (!InAir ()) {
 			foreach (WheelCollider wheel in wheels) {
 				wheel.motorTorque = speed * 100 * Input.GetAxis ("Acceleration_P" + playerID);
