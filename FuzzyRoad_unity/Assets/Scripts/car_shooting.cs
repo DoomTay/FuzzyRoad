@@ -3,6 +3,7 @@ using System.Collections;
 
 public class car_shooting : MonoBehaviour {
 
+	public int playerID = 1;
 	public int health = 100;
 	int damage = 3;
 
@@ -20,7 +21,7 @@ public class car_shooting : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-			if (Input.GetButtonDown ("Fire1")) {
+			if (Input.GetButtonDown ("Fire" + playerID)) {
 				GameObject clone;
 				clone = (GameObject)Instantiate (projectile, Spawnpoint.position + transform.forward * 5, projectile.transform.rotation);
 
