@@ -5,6 +5,7 @@ public class Projectile : MonoBehaviour {
 
 	public float lifeSpan;
 	public int damage;
+	public GameObject owner;
 	// Use this for initialization
 	void Start () {
 	
