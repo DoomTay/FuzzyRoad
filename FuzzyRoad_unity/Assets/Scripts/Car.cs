@@ -9,8 +9,13 @@ public class Car : MonoBehaviour {
 	public Camera camera;
 	public int playerID = 1;
 	public Slider healthBar;
+    public GameObject attacker; //Chris: Contains owner
+    public GameObject player1;
+    public GameObject player2;
+    public GameObject player3;
+    public GameObject player4;
 
-	private Transform respawnPoint;
+    private Transform respawnPoint;
 
     public int health = 100;
     int damage = 3;
@@ -24,7 +29,12 @@ public class Car : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GetComponent<Rigidbody>().centerOfMass += new Vector3(0, 0, 1.0f);
+        //Setting up checks for which attacker. May be wrong about this.
+        player1 = GameObject.FindWithTag("Player1");
+        player2 = GameObject.FindWithTag("Player2");
+        player3 = GameObject.FindWithTag("Player3");
+        player4 = GameObject.FindWithTag("Player4");
+        GetComponent<Rigidbody>().centerOfMass += new Vector3(0, 0, 1.0f);
 		respawnPoint = transform;
 		//respawnPoint.position = transform.position;
 		//respawnPoint.rotation = transform.rotation;
@@ -86,9 +96,17 @@ public class Car : MonoBehaviour {
 
 	public void Damage(int amount)
 	{
+        //Getting attacker id
+        attacker = GetComponent<Projectile>().owner; //Chris: Get owner ID
 		health -= amount;
 		if (health < 0) {
 			Destroy(gameObject);
+            //if the attacker killed apply points.
+            if(attacker = player2)
+            {
+                //award points
+                GetComponent<Deathmatch>().awardPoints2();
+            }
 		}
 	}
 
