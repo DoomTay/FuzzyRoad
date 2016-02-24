@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ui_timer : MonoBehaviour {
 	public Text timerLabel;
 
-	private float time = 60;
+	private float time = 420;
 
 	private float minutes;
 	private float seconds;

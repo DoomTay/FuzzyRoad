@@ -16,6 +16,8 @@ public class CarController: MonoBehaviour {
 	public Slider healthBar;
 	private Transform respawnPoint;
 
+	public bool hasFlag = false;
+
 	//Rigidbody.
 	private Rigidbody rigid;
 
