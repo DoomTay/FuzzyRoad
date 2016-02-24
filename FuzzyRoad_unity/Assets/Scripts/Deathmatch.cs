@@ -3,10 +3,7 @@ using System.Collections;
 
 public class Deathmatch : MonoBehaviour {
     //Need to setup a UI display for these.
-    public int player1Points = 0;
-    public int player2Points = 0;
-    public int player3Points = 0;
-    public int player4Points = 0;
+	public GameObject[] players;
     public int maxPoints = 5;
 
     // Use this for initialization
@@ -17,39 +14,13 @@ public class Deathmatch : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //check when player reaches or exceeds maxPoints.
-	    if(player1Points >= maxPoints)
-        {
-
-        }
-        else if(player2Points >= maxPoints)
-        {
-
-        }
-        else if(player3Points >= maxPoints)
-        {
-
-        }
-        else if(player4Points >= maxPoints)
-        {
-
-        }
+		foreach(GameObject player in players)
+		{
+			if(player.GetComponent<Car>().score >= maxPoints)
+			{
+				break;
+			}
+		}
 
 	}
-
-    public void awardPoints1()
-    {
-
-    }
-    public void awardPoints2()
-    {
-        player2Points++;
-    }
-    public void awardPoints3()
-    {
-
-    }
-    public void awardPoints4()
-    {
-
-    }
 }

@@ -10,6 +10,11 @@ using UnityEngine.UI;
 public class CarController: MonoBehaviour {
 
 	public int playerID = 1;
+	public int health = 100;
+	int damage = 3;
+	public int score;
+	public Slider healthBar;
+	private Transform respawnPoint;
 
 	//Rigidbody.
 	private Rigidbody rigid;
@@ -628,6 +633,19 @@ public class CarController: MonoBehaviour {
 
 		}
 
+	}
+
+	public void Damage(int amount, GameObject attacker)
+	{
+		health -= amount;
+		if (health < 0) {
+			Destroy(gameObject);
+			
+			if(attacker.GetComponent<Car>())
+			{
+				attacker.GetComponent<Car>().score++;
+			}
+		}
 	}
 
 	public void Differential (){

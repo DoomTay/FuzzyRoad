@@ -19,8 +19,9 @@ public class Projectile : MonoBehaviour {
 
 	void OnCollisionEnter(Collision _collision)
 	{
-		if (_collision.gameObject.GetComponent<Car> ())
-			_collision.gameObject.GetComponent<Car> ().Damage (damage);
+		print (_collision.gameObject);
+		if (_collision.gameObject.GetComponent<CarController> ())
+			_collision.gameObject.GetComponent<CarController> ().Damage (damage, owner);
 		Destroy (gameObject);
 	}
 }
