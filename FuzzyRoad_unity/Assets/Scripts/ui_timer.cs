@@ -5,26 +5,24 @@ using UnityEngine.UI;
 public class ui_timer : MonoBehaviour {
 	public Text timerLabel;
 
-	private float time;
+	private float time = 60;
 
 	private float minutes;
 	private float seconds;
-	private float fraction;
 
 
 	void Update() {
 
 		// TIMER FOR GAME 
-		time += Time.deltaTime;
+		time -= Time.deltaTime;
 
-		minutes = time / 60; //Divide the guiTime by sixty to get the minutes.
-		seconds = time % 60;//Use the euclidean division for the seconds.
-		fraction = (time * 100) % 100;
+		minutes = Mathf.Floor (time / 60); //Divide the guiTime by sixty to get the minutes.
+		seconds = Mathf.Floor(time % 60);//Use the euclidean division for the seconds.
 
 		//update the label value
 		timerLabel.text = string.Format ("{0:00} : {1:00}", minutes, seconds);
 
-		if (minutes >= 1) {
+		if (time <= 0) {
 		
 			Application.LoadLevel (0);
 			Debug.Log ("Timer has ended");
