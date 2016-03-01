@@ -14,7 +14,8 @@ public class CarController: MonoBehaviour {
 	int damage = 3;
 	public int score;
 	public Slider healthBar;
-	private Transform respawnPoint;
+	private Vector3 respawnPos;
+	private Quaternion respawnRot;
 
 	public bool hasFlag = false;
 
@@ -212,11 +213,12 @@ public class CarController: MonoBehaviour {
 	private float steeringWheelOldAngle;
 	private int touchId = -1;
 	private Vector2 touchPos;
-
+	private bool destroyed = true;
 
 	void Start (){
-
 		rigid = GetComponent<Rigidbody>();
+		respawnPos = transform.position;
+		respawnRot = transform.rotation;
 		Time.fixedDeltaTime = .02f;
 		rigid.maxAngularVelocity = 5f;
 		allWheelColliders = GetComponentsInChildren<WheelCollider>();
@@ -265,7 +267,9 @@ public class CarController: MonoBehaviour {
 		SoundsInitialize();
 		MobileGUI();
 		SteeringWheelInit();
+		//CreateWheelColliders ();
 		SmokeInit();
+		//print (allWheelColliders);
 
 	}
 
@@ -363,7 +367,7 @@ public class CarController: MonoBehaviour {
 
 		WheelCollider[] allWheelColliders = new WheelCollider[allWheelTransforms.Count];
 		allWheelColliders = GetComponentsInChildren<WheelCollider>();
-
+		print (allWheelColliders);
 		FrontLeftWheelCollider = allWheelColliders[0];
 		FrontRightWheelCollider = allWheelColliders[1];
 		RearLeftWheelCollider = allWheelColliders[2];
@@ -443,32 +447,34 @@ public class CarController: MonoBehaviour {
 	}
 
 	void Update (){
-
-		if(canControl){
-			if(mobileController){
-				if(_mobileControllerType == MobileGUIType.NGUIController)
-					NGUIControlling();
-				if(_mobileControllerType == MobileGUIType.UIController)
-					UIControlling();
-				MobileSteeringInputs();
-				if(steeringWheelControl)
-					SteeringWheelControlling();
-			}else{
-				KeyboardControlling();
+		healthBar.value = health;
+		if (health > 0) {
+			if (canControl) {
+				if (mobileController) {
+					if (_mobileControllerType == MobileGUIType.NGUIController)
+						NGUIControlling ();
+					if (_mobileControllerType == MobileGUIType.UIController)
+						UIControlling ();
+					MobileSteeringInputs ();
+					if (steeringWheelControl)
+						SteeringWheelControlling ();
+				} else {
+					KeyboardControlling ();
+				}
+				Lights ();
+				ResetCar ();
+				ShiftGears ();
 			}
-			Lights();
-			ResetCar();
-			ShiftGears();
+
+			WheelAlign ();
+			SkidAudio ();
+			WheelCamber ();
+
+			if (chassis)
+				Chassis ();
+			if (dashBoard && canControl)
+				DashboardGUI ();
 		}
-
-		WheelAlign();
-		SkidAudio();
-		WheelCamber();
-
-		if(chassis)
-			Chassis();
-		if(dashBoard && canControl)
-			DashboardGUI();
 
 	}
 
@@ -494,6 +500,16 @@ public class CarController: MonoBehaviour {
 			engineSound.pitch = Mathf.Lerp(engineSound.pitch, 0f, Time.deltaTime);
 		}
 
+	}
+
+	IEnumerator Death (){
+		print ("Boom");
+		destroyed = true;
+		yield return new WaitForSeconds(5);
+		destroyed = false;
+		health = 100;
+		transform.position = respawnPos;
+		transform.rotation = respawnRot;
 	}
 
 	public void Engine (){
@@ -640,8 +656,8 @@ public class CarController: MonoBehaviour {
 	public void Damage(int amount, GameObject attacker)
 	{
 		health -= amount;
-		if (health < 0) {
-			Destroy(gameObject);
+		if (health <= 0) {
+			StartCoroutine("Death");
 			
 			if(attacker.GetComponent<Car>())
 			{
