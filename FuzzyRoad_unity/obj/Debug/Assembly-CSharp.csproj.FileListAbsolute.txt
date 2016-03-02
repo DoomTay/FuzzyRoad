@@ -42,3 +42,6 @@ C:\Users\Loki\Desktop\Fuzzy Road\FuzzyRoad\FuzzyRoad_unity\Temp\bin\Debug\UnityE
 C:\Users\Loki\Desktop\Fuzzy Road\FuzzyRoad\FuzzyRoad_unity\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\Loki\Desktop\Fuzzy Road\FuzzyRoad\FuzzyRoad_unity\obj\Debug\Assembly-CSharp.dll
 C:\Users\Loki\Desktop\Fuzzy Road\FuzzyRoad\FuzzyRoad_unity\obj\Debug\Assembly-CSharp.pdb
+C:\Users\David\Desktop\FR\FuzzyRoad\FuzzyRoad_unity\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+C:\Users\David\Desktop\FR\FuzzyRoad\FuzzyRoad_unity\obj\Debug\Assembly-CSharp.dll
+C:\Users\David\Desktop\FR\FuzzyRoad\FuzzyRoad_unity\obj\Debug\Assembly-CSharp.pdb
