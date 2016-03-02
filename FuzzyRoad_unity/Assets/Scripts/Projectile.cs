@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour {
 
 	void OnCollisionEnter(Collision _collision)
 	{
-		print (_collision.gameObject);
+		print ("I have been shot by " + owner);
 		if (_collision.gameObject.GetComponent<CarController> ())
 			_collision.gameObject.GetComponent<CarController> ().Damage (damage, owner);
 		Destroy (gameObject);

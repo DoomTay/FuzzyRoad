@@ -213,7 +213,7 @@ public class CarController: MonoBehaviour {
 	private float steeringWheelOldAngle;
 	private int touchId = -1;
 	private Vector2 touchPos;
-	private bool destroyed = true;
+	private bool destroyed = false;
 
 	void Start (){
 		rigid = GetComponent<Rigidbody>();
@@ -656,12 +656,13 @@ public class CarController: MonoBehaviour {
 	public void Damage(int amount, GameObject attacker)
 	{
 		health -= amount;
-		if (health <= 0) {
+		print (gameObject.name + " has been hurt by " + attacker);
+		if (health <= 0 && !destroyed) {
 			StartCoroutine("Death");
 			
-			if(attacker.GetComponent<Car>())
+			if(attacker.GetComponent<CarController>())
 			{
-				attacker.GetComponent<Car>().score++;
+				attacker.GetComponent<CarController>().score++;
 			}
 		}
 	}
