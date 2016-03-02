@@ -14,6 +14,7 @@ public class CarController: MonoBehaviour {
 	int damage = 3;
 	public int score;
 	public Slider healthBar;
+	public Text scoreDisplay;
 	private Vector3 respawnPos;
 	private Quaternion respawnRot;
 
@@ -448,6 +449,7 @@ public class CarController: MonoBehaviour {
 
 	void Update (){
 		healthBar.value = health;
+		scoreDisplay.text = score.ToString();
 		if (health > 0) {
 			if (canControl) {
 				if (mobileController) {
@@ -839,7 +841,6 @@ public class CarController: MonoBehaviour {
 	}
 
 	public void KeyboardControlling (){
-
 		//Motor Input.
 		if(!changingGear)
 			motorInput = (Input.GetAxis("Vertical" + playerID));
