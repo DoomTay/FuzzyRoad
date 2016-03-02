@@ -843,18 +843,18 @@ public class Car_Cont2: MonoBehaviour {
 	public void KeyboardControlling (){
 		//Motor Input.
 		if(!changingGear)
-			motorInput = (Input.GetAxis("Vertical2"));
+			motorInput = (Input.GetAxis("Vertical" + playerID));
 		else
-			motorInput = Mathf.Clamp(Input.GetAxis("Vertical2"), -1f, 0f);
+			motorInput = Mathf.Clamp(Input.GetAxis("Vertical" + playerID), -1f, 0f);
 
 		//Steering Input.
-		if(Mathf.Abs (Input.GetAxis("Horizontal2")) > .05f)
-			steerInput = Mathf.Lerp (steerInput, Input.GetAxis("Horizontal2"), Time.deltaTime * 10);
+		if(Mathf.Abs (Input.GetAxis("Horizontal" + playerID)) > .05f)
+			steerInput = Mathf.Lerp (steerInput, Input.GetAxis("Horizontal" + playerID), Time.deltaTime * 10);
 		else
-			steerInput = Mathf.Lerp (steerInput, Input.GetAxis("Horizontal2"), Time.deltaTime * 10);
+			steerInput = Mathf.Lerp (steerInput, Input.GetAxis("Horizontal" + playerID), Time.deltaTime * 10);
 
 		//Boost Input.
-		if(Input.GetButton("Fire2"))
+		if(Input.GetButton("Fire" + playerID))
 			boostInput = 1.5f;
 		else
 			boostInput = 1f;
