@@ -448,7 +448,6 @@ public class CarController: MonoBehaviour {
 	}
 
 	void Update (){
-		print (Input.GetAxis ("Vertical" + playerID));
 		healthBar.value = health;
 		scoreDisplay.text = score.ToString();
 		if (health > 0) {
