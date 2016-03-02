@@ -9,7 +9,7 @@ using UnityEngine.UI;
 [RequireComponent (typeof(Rigidbody))]
 public class CarController: MonoBehaviour {
 
-	public int playerID = 1;
+	public int playerID;
 	public int health = 100;
 	int damage = 3;
 	public int score;
