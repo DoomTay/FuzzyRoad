@@ -6,7 +6,7 @@ public class Car : MonoBehaviour {
 
 	public WheelCollider[] wheels;
 	public WheelCollider[] frontWheels;
-	public Camera camera;
+	public Camera camera1;
 	public int playerID = 1;
 	public Slider healthBar;
 
