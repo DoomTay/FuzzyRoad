@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 	//Need to setup a UI display for these.
 	public GameObject[] players;
 	public int maxPoints = 5;
+
+	bool gameEnded = false;
 
 	public enum gamemode{Deathmatch, CTF};
 
@@ -20,12 +23,21 @@ public class GameManager : MonoBehaviour {
 		//check when player reaches or exceeds maxPoints.
 		foreach(GameObject player in players)
 		{
-			if(player.GetComponent<CarController>().score >= maxPoints)
+			if(player.GetComponent<CarController>().score >= maxPoints && gameEnded == false)
 			{
-				print (player + " wins");
+				StartCoroutine("Winner", player);
 				break;
 			}
 		}
 		
 	}
+
+	IEnumerator Winner (GameObject winner){
+		GameObject.Find ("Menu_Controller").GetComponent<ui_timer>().enabled = false;
+		GameObject.Find ("Timer").GetComponent<Text> ().text = winner.name + " wins";
+		gameEnded = true;
+		yield return new WaitForSeconds(5);
+		Application.LoadLevel ("Main_Menu2");
+	}
+
 }
