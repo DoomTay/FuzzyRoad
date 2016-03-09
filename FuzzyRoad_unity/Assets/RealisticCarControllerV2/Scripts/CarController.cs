@@ -9,6 +9,7 @@ using UnityEngine.UI;
 [RequireComponent (typeof(Rigidbody))]
 public class CarController: MonoBehaviour {
 
+	public GameObject Smoke;
 	public int playerID;
 	public int health = 100;
 	int damage = 3;
@@ -272,6 +273,8 @@ public class CarController: MonoBehaviour {
 		SmokeInit();
 		//print (allWheelColliders);
 
+
+
 	}
 
 	public AudioSource CreateAudioSource(string audioName, float minDistance, float volume, AudioClip audioClip, bool loop, bool playNow, bool destroyAfterFinished){
@@ -477,6 +480,13 @@ public class CarController: MonoBehaviour {
 			if (dashBoard && canControl)
 				DashboardGUI ();
 		}
+		Smoke = GameObject.Find("WhiteSmoke");
+		if (health <= 100) {
+			Smoke.SetActive (false);
+		}
+		else if (health < 75) { //smoke should be popping up, for some reason the car starts to automatically reverse, no control.
+			Smoke.SetActive (true);
+		} 
 
 	}
 
@@ -657,16 +667,16 @@ public class CarController: MonoBehaviour {
 
 	public void Damage(int amount, GameObject attacker)
 	{
+		Smoke = GameObject.Find("WhiteSmoke");
 		health -= amount;
 		print (gameObject.name + " has been hurt by " + attacker);
 		if (health <= 0 && !destroyed) {
-			StartCoroutine("Death");
+			StartCoroutine ("Death");
 			
-			if(attacker.GetComponent<CarController>())
-			{
-				attacker.GetComponent<CarController>().score++;
+			if (attacker.GetComponent<CarController> ()) {
+				attacker.GetComponent<CarController> ().score++;
 			}
-		}
+		}  
 	}
 
 	public void Differential (){

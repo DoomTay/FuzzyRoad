@@ -10,6 +10,7 @@ public class Car : MonoBehaviour {
 	public int playerID = 1;
 	public Slider healthBar;
 
+	public GameObject Smoke;
 	public int score;
 
     private Transform respawnPoint;
@@ -26,6 +27,8 @@ public class Car : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Smoke = GameObject.Find("WhiteSmoke");
+		Smoke.SetActive (false);
         GetComponent<Rigidbody>().centerOfMass += new Vector3(0, 0, 1.0f);
 		respawnPoint = transform;
 		//respawnPoint.position = transform.position;
@@ -34,9 +37,10 @@ public class Car : MonoBehaviour {
 		healthBar.maxValue = health;
 		healthBar.value = health;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+
 //		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
 		healthBar.value = health;
 		if (!InAir ()) {
@@ -89,7 +93,11 @@ public class Car : MonoBehaviour {
 	public void Damage(int amount, GameObject attacker)
 	{
 		health -= amount;
-		if (health < 0) {
+		if (health < 35) {
+			Smoke.SetActive (true);
+			
+		}
+		else if (health < 0) {
 			Destroy(gameObject);
     
             if(attacker.GetComponent<Car>())
