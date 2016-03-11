@@ -3,15 +3,33 @@ using System.Collections;
 
 public class LevelCamera : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		transform.RotateAround(transform.root.position, transform.right, -transform.eulerAngles.x);
-		transform.RotateAround(transform.root.position, transform.up, (transform.root.eulerAngles.y - transform.eulerAngles.y) * 0.1f);
-		transform.RotateAround(transform.root.position, transform.forward, -transform.eulerAngles.z);
-	}
+   
+    public Transform car;
+    public float check;
+
+
+
+    public Vector3 Offset = new Vector3(-4.5f,4.0f,5.0f);
+    // Use this for initialization
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        check = car.eulerAngles.y - transform.eulerAngles.y;
+        this.transform.position = car.transform.position + transform.right * Offset.x;
+        this.transform.position += car.up * Offset.y - (car.up * Mathf.Sin(car.eulerAngles.x * Mathf.Deg2Rad) * Offset.y);
+        this.transform.position += car.forward * Offset.z;
+
+        if (check < -180)
+            check += 180;
+        if (check > 180)
+            check -= 180;
+        transform.Rotate(new Vector3(0, check * .1f, 0));
+
+        print(car.eulerAngles.y);
+        print(transform.eulerAngles.y);
+    }
 }
