@@ -5,7 +5,6 @@ public class LevelCamera : MonoBehaviour {
 
    
     public Transform car;
-    public float check;
 
 
 
@@ -13,23 +12,21 @@ public class LevelCamera : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+		this.transform.position = car.position + transform.TransformDirection (Offset);
+		var flatVectorToTarget = car.forward;
+		flatVectorToTarget.y = 0;
+		var newRotation = Quaternion.LookRotation(flatVectorToTarget);
+		transform.rotation = newRotation;
     }
 
     // Update is called once per frame
     void Update()
     {
-        check = car.eulerAngles.y - transform.eulerAngles.y;
-        this.transform.position = car.transform.position + transform.right * Offset.x;
-        this.transform.position += car.up * Offset.y - (car.up * Mathf.Sin(car.eulerAngles.x * Mathf.Deg2Rad) * Offset.y);
-        this.transform.position += car.forward * Offset.z;
+		this.transform.position = car.position + transform.TransformDirection (Offset);
 
-        if (check < -180)
-            check += 180;
-        if (check > 180)
-            check -= 180;
-        transform.Rotate(new Vector3(0, check * .1f, 0));
-
-        print(car.eulerAngles.y);
-        print(transform.eulerAngles.y);
+		var flatVectorToTarget = car.forward;
+		flatVectorToTarget.y = 0;
+		var newRotation = Quaternion.LookRotation(flatVectorToTarget);
+		transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, 0.05f);
     }
 }
