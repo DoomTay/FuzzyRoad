@@ -452,8 +452,8 @@ public class CarController: MonoBehaviour {
 	}
 
 	void Update (){
-		healthBar.value = health;
-		scoreDisplay.text = score.ToString();
+		if(healthBar) healthBar.value = health;
+		if(scoreDisplay) scoreDisplay.text = score.ToString();
 		if (health > 0) {
 			if (canControl) {
 				if (mobileController) {
