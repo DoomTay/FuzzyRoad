@@ -8,7 +8,7 @@ public class LevelCamera : MonoBehaviour {
 
 
 
-    public Vector3 Offset = new Vector3(-4.5f,4.0f,5.0f);
+    public Vector3 Offset = new Vector3(0f,3.5f,-9f);
     // Use this for initialization
     void Start()
     {

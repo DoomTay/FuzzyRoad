@@ -226,6 +226,7 @@ public class CarController: MonoBehaviour {
 		allWheelColliders = GetComponentsInChildren<WheelCollider>();
 		rotationValueExtra = new float[ExtraRearWheelsCollider.Length];
 		defSteerAngle = steerAngle;
+		Smoke = transform.Find("WhiteSmoke").gameObject;
 
 		if(dashBoard){
 
@@ -480,8 +481,7 @@ public class CarController: MonoBehaviour {
 			if (dashBoard && canControl)
 				DashboardGUI ();
 		}
-		Smoke = GameObject.Find("WhiteSmoke");
-		if (health <= 100) {
+		if (health >= 100) {
 			Smoke.SetActive (false);
 		}
 		else if (health < 75) { //smoke should be popping up, for some reason the car starts to automatically reverse, no control.
@@ -667,7 +667,6 @@ public class CarController: MonoBehaviour {
 
 	public void Damage(int amount, GameObject attacker)
 	{
-		Smoke = GameObject.Find("WhiteSmoke");
 		health -= amount;
 		print (gameObject.name + " has been hurt by " + attacker);
 		if (health <= 0 && !destroyed) {
