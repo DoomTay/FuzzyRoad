@@ -9,6 +9,7 @@ using UnityEngine.UI;
 [RequireComponent (typeof(Rigidbody))]
 public class CarController: MonoBehaviour {
 
+	public GameObject Smoke;
 	public int playerID;
 	public int health = 100;
 	int damage = 3;
@@ -225,6 +226,7 @@ public class CarController: MonoBehaviour {
 		allWheelColliders = GetComponentsInChildren<WheelCollider>();
 		rotationValueExtra = new float[ExtraRearWheelsCollider.Length];
 		defSteerAngle = steerAngle;
+		Smoke = transform.Find("WhiteSmoke").gameObject;
 
 		if(dashBoard){
 
@@ -271,6 +273,8 @@ public class CarController: MonoBehaviour {
 		//CreateWheelColliders ();
 		SmokeInit();
 		//print (allWheelColliders);
+
+
 
 	}
 
@@ -477,6 +481,12 @@ public class CarController: MonoBehaviour {
 			if (dashBoard && canControl)
 				DashboardGUI ();
 		}
+		if (health >= 100) {
+			Smoke.SetActive (false);
+		}
+		else if (health < 75) { //smoke should be popping up, for some reason the car starts to automatically reverse, no control.
+			Smoke.SetActive (true);
+		} 
 
 	}
 
@@ -660,13 +670,12 @@ public class CarController: MonoBehaviour {
 		health -= amount;
 		print (gameObject.name + " has been hurt by " + attacker);
 		if (health <= 0 && !destroyed) {
-			StartCoroutine("Death");
+			StartCoroutine ("Death");
 			
-			if(attacker.GetComponent<CarController>())
-			{
-				attacker.GetComponent<CarController>().score++;
+			if (attacker.GetComponent<CarController> ()) {
+				attacker.GetComponent<CarController> ().score++;
 			}
-		}
+		}  
 	}
 
 	public void Differential (){
