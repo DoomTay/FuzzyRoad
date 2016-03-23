@@ -240,7 +240,6 @@ public class CarController: MonoBehaviour {
 				RPMNeedle = UIInputs.RPMNeedleUI;
 				KMHNeedle = UIInputs.KMHNeedleUI;
 			}
-
 		}
 
 		if(autoFindButtons && mobileController){
@@ -270,9 +269,7 @@ public class CarController: MonoBehaviour {
 		SoundsInitialize();
 		MobileGUI();
 		SteeringWheelInit();
-		//CreateWheelColliders ();
 		SmokeInit();
-		//print (allWheelColliders);
 
 
 
@@ -329,11 +326,12 @@ public class CarController: MonoBehaviour {
 			wheelcollider.transform.parent = WheelColliders.transform;
 			wheelcollider.transform.localScale = Vector3.one;
 			wheelcollider.layer = LayerMask.NameToLayer("Wheel");
+			print ("Imbuing " + gameObject.name + " with a thing");
 			wheelcollider.AddComponent<WheelCollider>();
 			wheelcollider.GetComponent<WheelCollider>().radius = (wheel.GetComponent<MeshRenderer>().bounds.size.y / 2f) / transform.localScale.y;
 
-			wheelcollider.AddComponent<RCCWheelSkidmarks>();
-			wheelcollider.GetComponent<RCCWheelSkidmarks>().vehicle = GetComponent<RCCCarControllerV2>();
+			wheelcollider.AddComponent<FRWheelSkidmarks>();
+			wheelcollider.GetComponent<FRWheelSkidmarks>().vehicle = GetComponent<CarController>();
 
 			JointSpring spring = wheelcollider.GetComponent<WheelCollider>().suspensionSpring;
 
@@ -517,8 +515,10 @@ public class CarController: MonoBehaviour {
 	IEnumerator Death (){
 		print ("Boom");
 		destroyed = true;
+		KillOrStartEngine (0);
 		yield return new WaitForSeconds(5);
 		destroyed = false;
+		KillOrStartEngine (1);
 		health = 100;
 		transform.position = respawnPos;
 		transform.rotation = respawnRot;
