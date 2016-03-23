@@ -3,11 +3,13 @@ using System.Collections;
 
 public class Flag : MonoBehaviour {
 
-	private Transform initialPlace;
+	public Vector3 initialPos;
+	public Quaternion initialRot;
 
 	// Use this for initialization
 	void Start () {
-		initialPlace = transform;
+		initialPos = transform.position;
+		initialRot = transform.rotation;
 	}
 	
 	// Update is called once per frame
@@ -24,15 +26,7 @@ public class Flag : MonoBehaviour {
 			transform.position = mount.position;
 			transform.rotation = mount.rotation;
 			culprit.GetComponent<CarController> ().hasFlag = true;
-			//GetComponent<Collider> ().enabled = false;
-		}
-		else if (culprit.name == "Capture Zone" && transform.parent != transform.root) {
-			CarController captor = transform.root.gameObject.GetComponent<CarController> ();
-			transform.parent = transform.root;
-			transform.position = initialPlace.position;
-			transform.rotation = initialPlace.rotation;
-			captor.hasFlag = false;
-			//GetComponent<Collider> ().enabled = true;
+			GetComponent<Collider> ().enabled = false;
 		}
 	}
 }
