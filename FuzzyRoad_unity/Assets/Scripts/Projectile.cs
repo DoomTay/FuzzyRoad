@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour {
 	public GameObject owner;
 	// Use this for initialization
 	void Start () {
-	
+		Physics.IgnoreCollision(GetComponent<Collider>(), owner.GetComponent<Collider>());
 	}
 	
 	// Update is called once per frame
@@ -19,9 +19,10 @@ public class Projectile : MonoBehaviour {
 
 	void OnCollisionEnter(Collision _collision)
 	{
-		print ("I have been shot by " + owner);
-		if (_collision.gameObject.GetComponent<CarController> ())
-			_collision.gameObject.GetComponent<CarController> ().Damage (damage, owner);
-		Destroy (gameObject);
+		if (_collision.gameObject != owner) {
+			if (_collision.gameObject.GetComponent<CarController> ())
+				_collision.gameObject.GetComponent<CarController> ().Damage (damage, owner);
+			Destroy (gameObject);
+		}
 	}
 }
