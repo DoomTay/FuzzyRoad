@@ -8,7 +8,10 @@ public class Projectile : MonoBehaviour {
 	public GameObject owner;
 	// Use this for initialization
 	void Start () {
-		Physics.IgnoreCollision(GetComponent<Collider>(), owner.GetComponent<Collider>());
+		Collider[] ownerColliders = owner.GetComponentsInChildren<Collider>(false);
+		foreach (Collider ownerCol in ownerColliders) {
+			Physics.IgnoreCollision(GetComponent<Collider>(), ownerCol);
+		}
 	}
 	
 	// Update is called once per frame

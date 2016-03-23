@@ -524,6 +524,7 @@ public class CarController: MonoBehaviour {
 		foreach (MeshRenderer renderer in renderers) {
 			renderer.enabled = false;
 		}
+		Smoke.SetActive (false);
 		yield return new WaitForSeconds(10);
 		explosion.SetActive (false);
 		transform.position = respawnPos;
