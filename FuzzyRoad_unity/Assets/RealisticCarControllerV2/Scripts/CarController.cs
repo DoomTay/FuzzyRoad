@@ -18,6 +18,7 @@ public class CarController: MonoBehaviour {
 	public Text scoreDisplay;
 	private Vector3 respawnPos;
 	private Quaternion respawnRot;
+	private GameObject explosion;
 
 	public bool hasFlag = false;
 
@@ -227,6 +228,8 @@ public class CarController: MonoBehaviour {
 		rotationValueExtra = new float[ExtraRearWheelsCollider.Length];
 		defSteerAngle = steerAngle;
 		Smoke = transform.Find("WhiteSmoke").gameObject;
+		explosion = transform.Find("Explosion").gameObject;
+		explosion.SetActive (false);
 
 		if(dashBoard){
 
@@ -513,15 +516,23 @@ public class CarController: MonoBehaviour {
 	}
 
 	IEnumerator Death (){
-		print ("Boom");
+		explosion.SetActive (true);
 		destroyed = true;
 		KillOrStartEngine (0);
-		yield return new WaitForSeconds(5);
-		destroyed = false;
-		KillOrStartEngine (1);
+		MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
 		health = 100;
+		foreach (MeshRenderer renderer in renderers) {
+			renderer.enabled = false;
+		}
+		yield return new WaitForSeconds(10);
+		explosion.SetActive (false);
 		transform.position = respawnPos;
 		transform.rotation = respawnRot;
+		foreach (MeshRenderer renderer in renderers) {
+			renderer.enabled = true;
+		}
+		destroyed = false;
+		KillOrStartEngine (1);
 	}
 
 	public void Engine (){

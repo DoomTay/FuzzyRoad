@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour {
 	//Need to setup a UI display for these.
 	public GameObject[] players;
 	public int maxPoints = 5;
+	public GameObject[] carSet;
 
 	bool gameEnded = false;
 
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		DontDestroyOnLoad (transform.gameObject);
 	}
 	
 	// Update is called once per frame
