@@ -2,9 +2,9 @@
 using System.Collections;
 
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(CarController))]
 public class car_shooting : MonoBehaviour {
 
-	public int playerID = 1;
 	public int health = 100;
 	int damage = 3;
 
@@ -24,7 +24,7 @@ public class car_shooting : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         fireGunTimer -= Time.deltaTime;
-        if (Input.GetButton("Fire" + playerID) && fireGunTimer <= 0)
+		if (Input.GetButton("Fire" + GetComponent<CarController>().playerID) && fireGunTimer <= 0)
         {
             GameObject clone;
             clone = (GameObject)Instantiate(projectile, Spawnpoint.position + transform.forward * 5, projectile.transform.rotation);
@@ -39,11 +39,11 @@ public class car_shooting : MonoBehaviour {
             //Destroy(projectile, 2);
             //Destroy(Bullet_Clone, 2);
         }
-        if(Input.GetButton("Fire" + playerID) && !sound.isPlaying){
+		if(Input.GetButton("Fire" + GetComponent<CarController>().playerID) && !sound.isPlaying){
             sound.Play();
 
         }
-        else if (Input.GetButtonUp("Fire" + playerID))
+		else if (Input.GetButtonUp("Fire" + GetComponent<CarController>().playerID))
             sound.Stop();
 		}
 	
