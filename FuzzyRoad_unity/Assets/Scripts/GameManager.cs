@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
 
 	private Vector2[] cameraDimensions = {new Vector2(0,0.5f),new Vector2(0.5f,0.5f),new Vector2(0,0),new Vector2(0.5f,0)};
 
+	public int[] charChoices = {0,0,0,0};
+
 	bool gameEnded = false;
 
 	public bool levelLoaded;
@@ -35,8 +37,6 @@ public class GameManager : MonoBehaviour {
 			
 		}
 
-		if (true)
-			SpawnCars ();
 	}
 	
 	// Update is called once per frame
@@ -84,15 +84,41 @@ public class GameManager : MonoBehaviour {
 	{
 		for (int i = 0; i < 4; i++) {
 			Transform spawnPoint = GameObject.Find ("SpawnPoint" + (i + 1)).transform;
-			GameObject newCar = (GameObject)Instantiate (carSet[0], spawnPoint.position, spawnPoint.rotation);
+			GameObject newCar = (GameObject)Instantiate (carSet[charChoices[i]], spawnPoint.position, spawnPoint.rotation);
 			newCar.name = "Player " + (i + 1);
 			newCar.GetComponent<CarController>().playerID = (i + 1);
-			newCar.GetComponent<CarController>().healthBar = GameObject.Find ("P" + (i + 1)  +"Health").GetComponent<Slider>();
-			newCar.GetComponent<CarController>().scoreDisplay = GameObject.Find ("P" + (i + 1)  +"Score").GetComponent<Text>();
+			newCar.GetComponent<CarController>().healthBar = GameObject.Find ("P" + (i + 1) + "Health").GetComponent<Slider>();
+			newCar.GetComponent<CarController>().scoreDisplay = GameObject.Find ("P" + (i + 1) + "Score").GetComponent<Text>();
 			players[i] = newCar;
 			GameObject newCamera = (GameObject)Instantiate (camera, spawnPoint.position, spawnPoint.rotation);
 			newCamera.GetComponent<LevelCamera>().car = newCar.transform;
 			newCamera.GetComponent<Camera>().rect = new Rect(cameraDimensions[i],new Vector2(0.5f,0.5f));
+		}
+	}
+
+	public void IncrementSelection(int index)
+	{
+		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
+		//charChoices[index]
+		if (charChoices [index] == carSet.Length - 1) {
+			charChoices[index] = 0;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y + (30 * (carSet.Length - 1)),carDisplay.position.z);
+		} else {
+			charChoices [index]++;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y - 30,carDisplay.position.z);
+		}
+	}
+
+	public void DecrementSelection(int index)
+	{
+		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
+		//charChoices[index]
+		if (charChoices [index] == 0) {
+			charChoices[index] = carSet.Length - 1;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y - (30 * (carSet.Length - 1)),carDisplay.position.z);
+		} else {
+			charChoices [index]--;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y + 30,carDisplay.position.z);
 		}
 	}
 
