@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour {
 
 	void Awake ()
 	{
-		
-		if (Instance) {
+
+        if (Instance) {
 			
 			DestroyImmediate (gameObject);
 			
@@ -71,13 +71,25 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
+    public void winState () {
+        for (int i = 1; i < 5; i++) {
+            GameObject.Find("k" + i).GetComponent<Text>().text = players[i - 1].GetComponent<CarController>().score.ToString();
+            GameObject.Find("d" + i).GetComponent<Text>().text = players[i - 1].GetComponent<CarController>().deaths.ToString();
+            int kill = players[i - 1].GetComponent<CarController>().score; 
+            int death = players[i - 1].GetComponent<CarController>().deaths; 
+            double kda = kill / death;
+            GameObject.Find("kda" + i).GetComponent<Text>().text = kda.ToString();
+        }
+    }
+
 
 	IEnumerator Winner (GameObject winner){
 		GameObject.Find ("Menu_Controller").GetComponent<ui_timer>().enabled = false;
 		GameObject.Find ("Timer").GetComponent<Text> ().text = winner.name + " wins";
 		gameEnded = true;
 		yield return new WaitForSeconds(5);
-		Application.LoadLevel ("Main_Menu2");
+        Application.LoadLevel ("Win State");
+        winState();
 	}
 
 	public void SpawnCars()

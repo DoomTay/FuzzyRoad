@@ -14,6 +14,7 @@ public class CarController: MonoBehaviour {
 	public int health = 100;
 	int damage = 3;
 	public int score;
+    public int deaths;
 	public Slider healthBar;
 	public Text scoreDisplay;
 	private Vector3 respawnPos;
@@ -683,7 +684,7 @@ public class CarController: MonoBehaviour {
 		print (gameObject.name + " has been hurt by " + attacker);
 		if (health <= 0 && !destroyed) {
 			StartCoroutine ("Death");
-			
+            this.GetComponent<CarController>().deaths++;
 			if (attacker.GetComponent<CarController> ()) {
 				attacker.GetComponent<CarController> ().score++;
 			}
