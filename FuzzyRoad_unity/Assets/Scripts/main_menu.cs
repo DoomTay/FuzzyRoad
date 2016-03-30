@@ -71,7 +71,6 @@ public class main_menu : MonoBehaviour
 
 	public void BeginGame () {
 		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
-		GM.charChoices = new int[] {0,0,0,0};
 		GM.StartCoroutine ("BeginMatch");
 	}
 
