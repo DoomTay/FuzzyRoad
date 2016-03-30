@@ -40,7 +40,8 @@ public class main_menu : MonoBehaviour
 
 	{
 		Application.LoadLevel ("Character_Select"); //this will load our first level from our build settings. "1" is the second scene in our game
-
+		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+		GM.charChoices = new int[] {0,0,0,0};
 	}
 
 	public void IncrementSelection(int index)

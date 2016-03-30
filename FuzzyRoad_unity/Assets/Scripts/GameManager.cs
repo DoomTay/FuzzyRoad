@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 
 	private Vector2[] cameraDimensions = {new Vector2(0,0.5f),new Vector2(0.5f,0.5f),new Vector2(0,0),new Vector2(0.5f,0)};
 
-	public int[] charChoices = {0,0,0,0};
+	public int[] charChoices = new int[4];
 
 	bool gameEnded = false;
 
@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour {
 			DontDestroyOnLoad (gameObject);
 			Instance = this;
 			
+		}
+
+		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
+			charChoices = new int[] {0,0,0,0};
+			SpawnCars ();
 		}
 
 	}
