@@ -54,10 +54,6 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-	public void BeginGame () {
-		StartCoroutine ("BeginMatch");
-	}
-
 	public IEnumerator BeginMatch () {
 		Application.LoadLevel ("CarPrototype");
 		levelLoaded = false;
@@ -71,14 +67,16 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-    public void winState () {
-        for (int i = 1; i < 5; i++) {
-            GameObject.Find("k" + i).GetComponent<Text>().text = players[i - 1].GetComponent<CarController>().score.ToString();
-            GameObject.Find("d" + i).GetComponent<Text>().text = players[i - 1].GetComponent<CarController>().deaths.ToString();
-            int kill = players[i - 1].GetComponent<CarController>().score; 
-            int death = players[i - 1].GetComponent<CarController>().deaths; 
-            double kda = kill / death;
-            GameObject.Find("kda" + i).GetComponent<Text>().text = kda.ToString();
+    public void winState (int[] killSet, int[] deathSet) {
+		print (killSet);
+		print (deathSet);
+        for (int i = 0; i < 4; i++) {
+			GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
+			GameObject.Find("d" + (i + 1)).GetComponent<Text>().text = deathSet[i].ToString();
+			double kda;
+			if(deathSet[i] == 0) kda = killSet[i];
+			else kda = killSet[i] / deathSet[i];
+			GameObject.Find("kda" + (i + 1)).GetComponent<Text>().text = kda.ToString();
         }
     }
 
@@ -88,8 +86,21 @@ public class GameManager : MonoBehaviour {
 		GameObject.Find ("Timer").GetComponent<Text> ().text = winner.name + " wins";
 		gameEnded = true;
 		yield return new WaitForSeconds(5);
-        Application.LoadLevel ("Win State");
-        winState();
+		int[] kills = new int[4];
+		int [] deaths = new int[4];
+		for (int i = 0; i < 4; i++) {
+			kills[i] = players[i].GetComponent<CarController>().score;
+			deaths[i] = players[i].GetComponent<CarController>().deaths;
+		}
+		Application.LoadLevel ("Win State");
+		levelLoaded = false;
+		
+		while (levelLoaded == false) {
+			
+			yield return new WaitForEndOfFrame();
+			
+		}
+        winState(kills,deaths);
 	}
 
 	public void SpawnCars()
@@ -105,32 +116,6 @@ public class GameManager : MonoBehaviour {
 			GameObject newCamera = (GameObject)Instantiate (camera, spawnPoint.position, spawnPoint.rotation);
 			newCamera.GetComponent<LevelCamera>().car = newCar.transform;
 			newCamera.GetComponent<Camera>().rect = new Rect(cameraDimensions[i],new Vector2(0.5f,0.5f));
-		}
-	}
-
-	public void IncrementSelection(int index)
-	{
-		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
-		//charChoices[index]
-		if (charChoices [index] == carSet.Length - 1) {
-			charChoices[index] = 0;
-			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y + (30 * (carSet.Length - 1)),carDisplay.position.z);
-		} else {
-			charChoices [index]++;
-			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y - 30,carDisplay.position.z);
-		}
-	}
-
-	public void DecrementSelection(int index)
-	{
-		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
-		//charChoices[index]
-		if (charChoices [index] == 0) {
-			charChoices[index] = carSet.Length - 1;
-			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y - (30 * (carSet.Length - 1)),carDisplay.position.z);
-		} else {
-			charChoices [index]--;
-			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y + 30,carDisplay.position.z);
 		}
 	}
 

@@ -43,8 +43,39 @@ public class main_menu : MonoBehaviour
 
 	}
 
-	public void ExitGame () //This function will be used on our "Yes" button in our Quit menu
+	public void IncrementSelection(int index)
+	{
+		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
+		if (GM.charChoices [index] == GM.carSet.Length - 1) {
+			GM.charChoices[index] = 0;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y + (30 * (GM.carSet.Length - 1)),carDisplay.position.z);
+		} else {
+			GM.charChoices [index]++;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y - 30,carDisplay.position.z);
+		}
+	}
+	
+	public void DecrementSelection(int index)
+	{
+		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
+		if (GM.charChoices [index] == 0) {
+			GM.charChoices[index] = GM.carSet.Length - 1;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y - (30 * (GM.carSet.Length - 1)),carDisplay.position.z);
+		} else {
+			GM.charChoices [index]--;
+			carDisplay.position = new Vector3(carDisplay.position.x,carDisplay.position.y + 30,carDisplay.position.z);
+		}
+	}
 
+	public void BeginGame () {
+		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+		GM.charChoices = new int[] {0,0,0,0};
+		GM.StartCoroutine ("BeginMatch");
+	}
+
+	public void ExitGame () //This function will be used on our "Yes" button in our Quit menu
 	{
 		Application.Quit(); //this will quit our game. Note this will only work after building the game
 

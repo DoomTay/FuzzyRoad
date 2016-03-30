@@ -3,7 +3,7 @@ guid: 6fbab99129ab1584f80fc3101a74fec3
 timeCreated: 1459133113
 licenseType: Free
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
     100002: highway_t1:group32_highway_t1:group34_highway_t1:group35_highway_t1:group36_highway_t1:pasted__pasted__pasted__pasted__pasted__pasted__pasted__pCube5_highway_t1:polySurface2_highway_t1:polySurface1
@@ -243,13 +243,12 @@ ModelImporter:
     4300090: highway_t1:group32_highway_t1:group34_highway_t1:group35_highway_t1:group36_highway_t1:pCube5_highway_t1:polySurface2_highway_t1:polySurface1
     4300092: highway_t1:group32_highway_t1:group34_highway_t1:group35_highway_t1:group36_highway_t1:pCylinder1_highway_t1:polySurface2_highway_t1:polySurface1
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleRotations: 1
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
@@ -257,9 +256,9 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 1
-    animationRotationError: 0.5
-    animationPositionError: 0.5
-    animationScaleError: 0.5
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     clipAnimations: []
@@ -283,6 +282,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
     normalImportMode: 0
     tangentImportMode: 3
   importAnimation: 1
@@ -290,12 +290,12 @@ ModelImporter:
   humanDescription:
     human: []
     skeleton: []
-    armTwist: 0.5
-    foreArmTwist: 0.5
-    upperLegTwist: 0.5
-    legTwist: 0.5
-    armStretch: 0.05
-    legStretch: 0.05
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
     hasTranslationDoF: 0

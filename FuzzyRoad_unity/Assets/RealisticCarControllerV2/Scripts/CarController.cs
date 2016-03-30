@@ -521,10 +521,18 @@ public class CarController: MonoBehaviour {
 		destroyed = true;
 		KillOrStartEngine (0);
 		MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
+		Collider[] colliders = GetComponentsInChildren<Collider>();
+		Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
 		health = 100;
+		print (GetComponentsInChildren<Collider> () [0]);
 		foreach (MeshRenderer renderer in renderers) {
 			renderer.enabled = false;
 		}
+		foreach (Collider collider in colliders) {
+			collider.enabled = false;
+		}
+		GetComponent<Rigidbody> ().useGravity = false;
+
 		Smoke.SetActive (false);
 		yield return new WaitForSeconds(10);
 		explosion.SetActive (false);
@@ -533,6 +541,10 @@ public class CarController: MonoBehaviour {
 		foreach (MeshRenderer renderer in renderers) {
 			renderer.enabled = true;
 		}
+		foreach (Collider collider in colliders) {
+			collider.enabled = true;
+		}
+		GetComponent<Rigidbody> ().useGravity = true;
 		destroyed = false;
 		KillOrStartEngine (1);
 	}
