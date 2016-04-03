@@ -519,6 +519,13 @@ public class CarController: MonoBehaviour {
 	IEnumerator Death (){
 		explosion.SetActive (true);
 		destroyed = true;
+		if (hasFlag) {
+			GameObject flag = transform.Find ("Flag").gameObject;
+			hasFlag = false;
+			flag.transform.parent = null;
+			flag.transform.rotation = flag.GetComponent<Flag>().initialRot;
+			flag.GetComponent<Collider> ().enabled = true;
+		}
 		KillOrStartEngine (0);
 		MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
 		Collider[] colliders = GetComponentsInChildren<Collider>();
