@@ -38,10 +38,9 @@ public class GameManager : MonoBehaviour {
 		}
 
 		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
-			charChoices = new int[] {0,0,0,0};
+			charChoices = new int[] {2,0,0,0};
 			SpawnCars ();
 		}
-
 	}
 	
 	// Update is called once per frame

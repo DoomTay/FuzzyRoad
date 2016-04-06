@@ -37,7 +37,6 @@ public class main_menu : MonoBehaviour
 	}
 
 	public void StartLevel () //this function will be used on our Play button
-
 	{
 		Application.LoadLevel ("Character_Select"); //this will load our first level from our build settings. "1" is the second scene in our game
 		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
