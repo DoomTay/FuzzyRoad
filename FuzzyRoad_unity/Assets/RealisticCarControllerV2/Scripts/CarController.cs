@@ -20,6 +20,7 @@ public class CarController: MonoBehaviour {
 	private Vector3 respawnPos;
 	private Quaternion respawnRot;
 	private GameObject explosion;
+	public float defenseTimer;
 
 	public bool hasFlag = false;
 
@@ -456,6 +457,8 @@ public class CarController: MonoBehaviour {
 	void Update (){
 		if(healthBar) healthBar.value = health;
 		if(scoreDisplay) scoreDisplay.text = score.ToString();
+		if (defenseTimer > 0)
+			defenseTimer -= Time.deltaTime;
 		if (health > 0) {
 			if (canControl) {
 				if (mobileController) {
@@ -699,7 +702,8 @@ public class CarController: MonoBehaviour {
 
 	public void Damage(int amount, GameObject attacker)
 	{
-		health -= amount;
+		if (defenseTimer > 0) health -= (amount / 10);
+		else health -= amount;
 		print (gameObject.name + " has been hurt by " + attacker);
 		if (health <= 0 && !destroyed) {
 			StartCoroutine ("Death");
