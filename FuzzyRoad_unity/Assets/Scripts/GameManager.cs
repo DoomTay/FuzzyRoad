@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 	//Need to setup a UI display for these.
 	public GameObject[] players;
-	public int maxPoints = 5;
+	public int maxPoints = 15;
+    public int score;
 	public GameObject[] carSet;
 	public GameObject camera;
 
@@ -71,15 +72,19 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-    public void winState (int[] killSet, int[] deathSet) {
-		print (killSet);
+    public void winState (int[] killSet, int[] deathSet, int[] scoreSet) {
+        print (killSet);
 		print (deathSet);
         for (int i = 0; i < 4; i++) {
-			GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
+            int points = scoreSet[i] + killSet[i];
+            GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
 			GameObject.Find("d" + (i + 1)).GetComponent<Text>().text = deathSet[i].ToString();
-			double kda;
-			if(deathSet[i] == 0) kda = killSet[i];
-			else kda = killSet[i] / deathSet[i];
+            GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = points.ToString();
+            double kda;
+			if(deathSet[i] == 0)
+                kda = killSet[i];
+			else kda =
+                    (double) (killSet[i] / deathSet[i]);
 			GameObject.Find("kda" + (i + 1)).GetComponent<Text>().text = kda.ToString();
         }
     }
@@ -92,9 +97,11 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(5);
 		int[] kills = new int[4];
 		int [] deaths = new int[4];
+        int[] score = new int[4];
 		for (int i = 0; i < 4; i++) {
-			kills[i] = players[i].GetComponent<CarController>().score;
+			kills[i] = players[i].GetComponent<CarController>().kills;
 			deaths[i] = players[i].GetComponent<CarController>().deaths;
+            score[i] = players[i].GetComponent<CarController>().score;
 		}
 		Application.LoadLevel ("Win State");
 		levelLoaded = false;
@@ -104,7 +111,7 @@ public class GameManager : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			
 		}
-        winState(kills,deaths);
+        winState(kills, deaths, score);
 	}
 
 	public void SpawnCars()
