@@ -38,10 +38,24 @@ public class GameManager : MonoBehaviour {
 			
 		}
 
-		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
-			charChoices = new int[] {2,0,0,0};
-			SpawnCars ();
+		/*if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
+			StartCoroutine ("DefaultSpawn");
+		}*/
+	}
+
+	public IEnumerator DefaultSpawn () {
+		while (true) {
+			if (charChoices.Length == 0 && !levelLoaded)
+				break;
+			else if (charChoices.Length > 0)
+				StopCoroutine ("DefaultSpawn");
+			yield return new WaitForEndOfFrame();
+
 		}
+		print("Go");
+		charChoices = new int[] {0,0,0,0};
+		SpawnCars ();
+
 	}
 	
 	// Update is called once per frame

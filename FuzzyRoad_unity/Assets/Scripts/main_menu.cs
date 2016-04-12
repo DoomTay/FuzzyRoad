@@ -13,12 +13,12 @@ public class main_menu : MonoBehaviour
 	void Start ()
 
 	{
-		startMenu = startMenu.GetComponent<Canvas>();
-		startText = startText.GetComponent<Button> ();
-		exitText = exitText.GetComponent<Button> ();
-        controls = controls.GetComponent<Button>();
-        exitControls = exitControls.GetComponent<Button>();
-		startMenu.enabled = true;
+		if(startMenu) startMenu = startMenu.GetComponent<Canvas>();
+		if(startText) startText = startText.GetComponent<Button> ();
+		if(exitText) exitText = exitText.GetComponent<Button> ();
+		if(controls) controls = controls.GetComponent<Button>();
+		if(exitControls) exitControls = exitControls.GetComponent<Button>();
+		if(startMenu) startMenu.enabled = true;
 
 	}
 

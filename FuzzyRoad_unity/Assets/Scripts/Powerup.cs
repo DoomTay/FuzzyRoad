@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Powerup : MonoBehaviour {
 
+	public AudioClip pickup;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -17,6 +19,7 @@ public class Powerup : MonoBehaviour {
 		GameObject culprit = col.transform.root.gameObject;
 		if (culprit.GetComponent<CarController> ()) {
 			ActivatePowerup (culprit);
+			culprit.GetComponent<AudioSource> ().PlayOneShot (pickup);
 			Destroy (gameObject);
 		}
 	}
