@@ -82,7 +82,25 @@ public class GameManager : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			
 		}
-			SpawnCars ();
+		SpawnCars ();
+		foreach(var player in players)
+		{
+			player.GetComponent<CarController>().KillOrStartEngine(0);
+		}
+		GameObject.Find ("Menu_Controller").GetComponent<ui_timer> ().enabled = false;
+		GameObject.Find ("Timer").GetComponent<Text> ().text = "3";
+		yield return new WaitForSeconds (1);
+		GameObject.Find ("Timer").GetComponent<Text> ().text = "2";
+		yield return new WaitForSeconds (1);
+		GameObject.Find ("Timer").GetComponent<Text> ().text = "1";
+		yield return new WaitForSeconds (1);
+		GameObject.Find ("Timer").GetComponent<Text> ().text = "GO!";
+		foreach(var player in players)
+		{
+			player.GetComponent<CarController>().KillOrStartEngine(1);
+		}
+		yield return new WaitForSeconds (1);
+		GameObject.Find ("Menu_Controller").GetComponent<ui_timer> ().enabled = true;
 		
 	}
 
