@@ -76,10 +76,16 @@ public class GameManager : MonoBehaviour {
         print (killSet);
 		print (deathSet);
         for (int i = 0; i < 4; i++) {
+            int flagCapture;
+            if (scoreSet[i] == 0)
+                flagCapture = 0;
+            else
+                flagCapture = scoreSet[i] / 3;
             int points = scoreSet[i] + killSet[i];
             GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
 			GameObject.Find("d" + (i + 1)).GetComponent<Text>().text = deathSet[i].ToString();
             GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = points.ToString();
+            GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = flagCapture.ToString();
             double kda;
 			if(deathSet[i] == 0)
                 kda = killSet[i];
