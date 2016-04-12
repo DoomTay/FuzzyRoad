@@ -7,6 +7,8 @@ public class main_menu : MonoBehaviour
 	public Canvas startMenu;
 	public Button startText;
 	public Button exitText;
+    public Button controls;
+    public Button exitControls;
 
 	void Start ()
 
@@ -14,6 +16,8 @@ public class main_menu : MonoBehaviour
 		startMenu = startMenu.GetComponent<Canvas>();
 		startText = startText.GetComponent<Button> ();
 		exitText = exitText.GetComponent<Button> ();
+        controls = controls.GetComponent<Button>();
+        exitControls = exitControls.GetComponent<Button>();
 		startMenu.enabled = true;
 
 	}
@@ -42,6 +46,16 @@ public class main_menu : MonoBehaviour
 		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
 		GM.charChoices = new int[] {0,0,0,0};
 	}
+
+    public void Controls()
+    {
+        Application.LoadLevel("Controller");
+    }
+
+    public void ExitControls ()
+    {
+        Application.LoadLevel("Main_menu2");
+    }
 
 	public void IncrementSelection(int index)
 	{
