@@ -44,11 +44,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public IEnumerator DefaultSpawn () {
-		while (true) {
-			if (charChoices.Length == 0 && !levelLoaded)
+		while (levelLoaded == false) {
+			/*if (charChoices.Length == 0 && !levelLoaded)
 				break;
 			else if (charChoices.Length > 0)
-				StopCoroutine ("DefaultSpawn");
+				StopCoroutine ("DefaultSpawn");*/
 			yield return new WaitForEndOfFrame();
 
 		}
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour {
 	public IEnumerator BeginMatch () {
 		Application.LoadLevel ("CarPrototype");
 		levelLoaded = false;
-
+		StopCoroutine ("DefaultSpawn");
 		while (levelLoaded == false) {
 			
 			yield return new WaitForEndOfFrame();
