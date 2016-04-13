@@ -104,20 +104,14 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-    public void winState (int[] killSet, int[] deathSet, int[] scoreSet) {
+    public void winState (int[] killSet, int[] deathSet, int[] scoreSet, int[] flagCaptureSet) {
         print (killSet);
 		print (deathSet);
         for (int i = 0; i < 4; i++) {
-            int flagCapture;
-            if (scoreSet[i] == 0)
-                flagCapture = 0;
-            else
-                flagCapture = scoreSet[i] / 3;
-            int points = scoreSet[i] + killSet[i];
             GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
 			GameObject.Find("d" + (i + 1)).GetComponent<Text>().text = deathSet[i].ToString();
-            GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = points.ToString();
-            GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = flagCapture.ToString();
+            GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = score.ToString();
+            GameObject.Find("f" + (i + 1)).GetComponent<Text>().text = flagCaptureSet[i].ToString();
             double kda;
 			if(deathSet[i] == 0)
                 kda = killSet[i];
@@ -136,10 +130,12 @@ public class GameManager : MonoBehaviour {
 		int[] kills = new int[4];
 		int [] deaths = new int[4];
         int[] score = new int[4];
+        int[] flagCap = new int[4]
 		for (int i = 0; i < 4; i++) {
 			kills[i] = players[i].GetComponent<CarController>().kills;
 			deaths[i] = players[i].GetComponent<CarController>().deaths;
             score[i] = players[i].GetComponent<CarController>().score;
+            flagCap[i] = players[i].GetComponent<CarController>().flagCapture;
 		}
 		Application.LoadLevel ("Win State");
 		levelLoaded = false;
@@ -149,7 +145,7 @@ public class GameManager : MonoBehaviour {
 			yield return new WaitForEndOfFrame();
 			
 		}
-        winState(kills, deaths, score);
+        winState(kills, deaths, score, flagCap);
 	}
 
 	public void SpawnCars()

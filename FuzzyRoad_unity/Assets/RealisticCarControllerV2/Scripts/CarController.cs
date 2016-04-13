@@ -13,7 +13,8 @@ public class CarController: MonoBehaviour {
 	public int playerID;
 	public int health = 100;
 	int damage = 3;
-	public int score;
+    public int flagCapture;
+    public int score;
     public int deaths;
     public int kills;
 	public Slider healthBar;
@@ -710,7 +711,8 @@ public class CarController: MonoBehaviour {
 			StartCoroutine ("Death");
             this.GetComponent<CarController>().deaths++;
 			if (attacker.GetComponent<CarController> ()) {
-				attacker.GetComponent<CarController> ().kills++;
+				attacker.GetComponent<CarController>().kills++;
+                attacker.GetComponent<CarController>().score++;
 			}
 		}  
 	}
