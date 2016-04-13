@@ -12,6 +12,7 @@ public class Car : MonoBehaviour {
 
 	public GameObject Smoke;
 	public int score;
+    public int kills;
 
     private Transform respawnPoint;
 
@@ -102,8 +103,9 @@ public class Car : MonoBehaviour {
     
             if(attacker.GetComponent<Car>())
 			{
-				attacker.GetComponent<Car>().score++;
-			}
+				attacker.GetComponent<Car>().kills++;
+                attacker.GetComponent<Car>().score++;
+            }
 		}
 	}
 

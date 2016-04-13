@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CaptureZone : MonoBehaviour {
-
+    
 	// Use this for initialization
 	void Start () {
 	
@@ -20,6 +20,7 @@ public class CaptureZone : MonoBehaviour {
 			CarController captor = culprit.GetComponent<CarController> ();
 			GameObject flag = culprit.transform.Find("Flag").gameObject;
 			captor.hasFlag = false;
+            captor.flagCapture++;
 			captor.score += 3;
 			flag.transform.parent = null;
 			flag.transform.position = flag.GetComponent<Flag>().initialPos;
