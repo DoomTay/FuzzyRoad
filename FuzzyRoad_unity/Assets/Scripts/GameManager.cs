@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour {
 		int[] kills = new int[4];
 		int [] deaths = new int[4];
         int[] score = new int[4];
-        int[] flagCap = new int[4]
+        int[] flagCap = new int[4];
 		for (int i = 0; i < 4; i++) {
 			kills[i] = players[i].GetComponent<CarController>().kills;
 			deaths[i] = players[i].GetComponent<CarController>().deaths;
