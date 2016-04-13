@@ -6,7 +6,7 @@ using System.Collections;
 public class car_shooting : MonoBehaviour {
 
 	public int health = 100;
-	int damage = 3;
+	public int damage = 3;
 
     public AudioClip fireSound;
     AudioSource sound;

@@ -186,6 +186,8 @@ public class GameManager : MonoBehaviour {
 			players[i] = newCar;
 			GameObject newCamera = (GameObject)Instantiate (camera, spawnPoint.position, spawnPoint.rotation);
 			newCamera.GetComponent<LevelCamera>().car = newCar.transform;
+			if (charChoices [i] == 3)
+				newCamera.GetComponent<LevelCamera> ().Offset = new Vector3 (0, 12, -13);
 			newCamera.GetComponent<Camera>().rect = new Rect(cameraDimensions[i],new Vector2(0.5f,0.5f));
 		}
 	}
