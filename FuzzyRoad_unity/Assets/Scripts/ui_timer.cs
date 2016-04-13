@@ -23,9 +23,9 @@ public class ui_timer : MonoBehaviour {
 		timerLabel.text = string.Format ("{0:00} : {1:00}", minutes, seconds);
 
 		if (time <= 0) {
-		
-			Application.LoadLevel (0);
-			Debug.Log ("Timer has ended");
+			GameObject.Find ("GameManager").GetComponent<GameManager>().StartCoroutine ("TimeOut");
+			this.enabled = false;
 		}
 	}
+		
 }

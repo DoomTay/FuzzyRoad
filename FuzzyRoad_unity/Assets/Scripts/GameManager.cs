@@ -122,6 +122,32 @@ public class GameManager : MonoBehaviour {
     }
 
 
+	IEnumerator TimeOut (){
+		GameObject.Find ("Timer").GetComponent<Text> ().text = "Time's up";
+		gameEnded = true;
+		yield return new WaitForSeconds(5);
+		int[] kills = new int[4];
+		int [] deaths = new int[4];
+		int[] score = new int[4];
+		int[] flagCap = new int[4];
+		for (int i = 0; i < 4; i++) {
+			kills[i] = players[i].GetComponent<CarController>().kills;
+			deaths[i] = players[i].GetComponent<CarController>().deaths;
+			score[i] = players[i].GetComponent<CarController>().score;
+			flagCap[i] = players[i].GetComponent<CarController>().flagCapture;
+		}
+		Application.LoadLevel ("Win State");
+		levelLoaded = false;
+
+		while (levelLoaded == false) {
+
+			yield return new WaitForEndOfFrame();
+
+		}
+		winState(kills, deaths, score, flagCap);
+	}
+
+
 	IEnumerator Winner (GameObject winner){
 		GameObject.Find ("Menu_Controller").GetComponent<ui_timer>().enabled = false;
 		GameObject.Find ("Timer").GetComponent<Text> ().text = winner.name + " wins";
