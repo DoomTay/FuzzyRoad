@@ -533,12 +533,16 @@ public class CarController: MonoBehaviour {
 		}
 		KillOrStartEngine (0);
 		MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
+		SkinnedMeshRenderer[] skinRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
 		Collider[] colliders = GetComponentsInChildren<Collider>();
 		Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
 		health = 100;
 		print (GetComponentsInChildren<Collider> () [0]);
 		foreach (MeshRenderer renderer in renderers) {
 			renderer.enabled = false;
+		}
+		foreach (SkinnedMeshRenderer skin in skinRenderers) {
+			skin.enabled = false;
 		}
 		foreach (Collider collider in colliders) {
 			collider.enabled = false;
@@ -552,6 +556,9 @@ public class CarController: MonoBehaviour {
 		transform.rotation = respawnRot;
 		foreach (MeshRenderer renderer in renderers) {
 			renderer.enabled = true;
+		}
+		foreach (SkinnedMeshRenderer skin in skinRenderers) {
+			skin.enabled = true;
 		}
 		foreach (Collider collider in colliders) {
 			collider.enabled = true;
