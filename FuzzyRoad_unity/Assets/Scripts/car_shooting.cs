@@ -28,7 +28,7 @@ public class car_shooting : MonoBehaviour {
 		if (Input.GetButton("Fire" + GetComponent<CarController>().playerID) && fireGunTimer <= 0)
         {
             GameObject clone;
-            clone = (GameObject)Instantiate(projectile, Spawnpoint.position + transform.forward * 5, projectile.transform.rotation);
+			clone = (GameObject)Instantiate(projectile, Spawnpoint.position + transform.forward * 5, transform.rotation);
             clone.GetComponent<Projectile>().owner = gameObject;
 
             clone.GetComponent<Rigidbody>().velocity = Spawnpoint.TransformDirection(Vector3.forward * 80);
