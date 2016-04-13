@@ -19,6 +19,7 @@ public class car_shooting : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         sound = GetComponent<AudioSource>();
+		sound.clip = fireSound;
     }
 	
 	// Update is called once per frame
