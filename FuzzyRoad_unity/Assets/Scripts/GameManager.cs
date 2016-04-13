@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < 4; i++) {
             GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
 			GameObject.Find("d" + (i + 1)).GetComponent<Text>().text = deathSet[i].ToString();
-            GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = score.ToString();
+            GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = scoreSet[i].ToString();
             GameObject.Find("f" + (i + 1)).GetComponent<Text>().text = flagCaptureSet[i].ToString();
             double kda;
 			if(deathSet[i] == 0)
