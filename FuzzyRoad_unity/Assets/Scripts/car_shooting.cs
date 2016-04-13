@@ -24,29 +24,29 @@ public class car_shooting : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        fireGunTimer -= Time.deltaTime;
-		if (Input.GetButton("Fire" + GetComponent<CarController>().playerID) && fireGunTimer <= 0)
-        {
-            GameObject clone;
-			clone = (GameObject)Instantiate(projectile, Spawnpoint.position + transform.forward * 5, transform.rotation);
-            clone.GetComponent<Projectile>().owner = gameObject;
+		fireGunTimer -= Time.deltaTime;
+		if (GetComponent<CarController> ().canControl) {
+			if (Input.GetButton ("Fire" + GetComponent<CarController> ().playerID) && fireGunTimer <= 0) {
+				GameObject clone;
+				clone = (GameObject)Instantiate (projectile, Spawnpoint.position + transform.forward * 5, transform.rotation);
+				clone.GetComponent<Projectile> ().owner = gameObject;
 
-            clone.GetComponent<Rigidbody>().velocity = Spawnpoint.TransformDirection(Vector3.forward * 80);
+				clone.GetComponent<Rigidbody> ().velocity = Spawnpoint.TransformDirection (Vector3.forward * 80);
 
-            fireGunTimer = FIRE_GUN_COOLDOWN;
+				fireGunTimer = FIRE_GUN_COOLDOWN;
 
-            print("firing");
+				print ("firing");
 
-            //Destroy(projectile, 2);
-            //Destroy(Bullet_Clone, 2);
-        }
-		if(Input.GetButton("Fire" + GetComponent<CarController>().playerID) && !sound.isPlaying){
-            sound.Play();
+				//Destroy(projectile, 2);
+				//Destroy(Bullet_Clone, 2);
+			}
+			if (Input.GetButton ("Fire" + GetComponent<CarController> ().playerID) && !sound.isPlaying) {
+				sound.Play ();
 
-        }
-		else if (Input.GetButtonUp("Fire" + GetComponent<CarController>().playerID))
-            sound.Stop();
+			} else if (Input.GetButtonUp ("Fire" + GetComponent<CarController> ().playerID))
+				sound.Stop ();
 		}
+	}
 	
 	}
 

@@ -649,7 +649,6 @@ public class CarController: MonoBehaviour {
 	public float ApplyWheelTorque(bool leftSide){
 
 		if(speed > maxspeed || Mathf.Abs(FrontLeftWheelCollider.rpm) > 3000 || Mathf.Abs(RearLeftWheelCollider.rpm) > 3000)
-			return 0;
 
 		if(reversing && speed > 30)
 			return 0;

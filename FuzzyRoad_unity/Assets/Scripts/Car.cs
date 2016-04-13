@@ -6,7 +6,6 @@ public class Car : MonoBehaviour {
 
 	public WheelCollider[] wheels;
 	public WheelCollider[] frontWheels;
-	public Camera camera1;
 	public int playerID = 1;
 	public Slider healthBar;
 
@@ -30,11 +29,10 @@ public class Car : MonoBehaviour {
 	void Start () {
 		Smoke = GameObject.Find("WhiteSmoke");
 		Smoke.SetActive (false);
-        GetComponent<Rigidbody>().centerOfMass += new Vector3(0, 0, 1.0f);
+		GetComponent<Rigidbody> ().centerOfMass = transform.Find ("COM").localPosition;
 		respawnPoint = transform;
 		//respawnPoint.position = transform.position;
 		//respawnPoint.rotation = transform.rotation;
-		print (respawnPoint.position + "," + respawnPoint.rotation);
 		healthBar.maxValue = health;
 		healthBar.value = health;
 	}
@@ -46,26 +44,26 @@ public class Car : MonoBehaviour {
 		healthBar.value = health;
 		if (!InAir ()) {
 			foreach (WheelCollider wheel in wheels) {
-				wheel.motorTorque = speed * 100 * Input.GetAxis ("Acceleration_P" + playerID);
-				if (OppositeSides (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis ("Acceleration_P" + playerID))) {
-					print ("Braking_P" + playerID);
+				wheel.motorTorque = speed * 10000 * Input.GetAxis ("Vertical" + playerID);
+				if (OppositeSides (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis ("Vertical" + playerID))) {
 					wheel.brakeTorque = 10000 * speed;
 				} else
 					wheel.brakeTorque = 0;
 			}
 
 			foreach (WheelCollider frontWheel in frontWheels) {
-				frontWheel.steerAngle = 30 * Input.GetAxis ("Steering_P" + playerID);
+				frontWheel.steerAngle = 30 * Input.GetAxis ("Horizontal" + playerID);
 			}
-		} else {
+		}
+		/*else {
 			GetComponent<Rigidbody>().AddTorque(transform.forward * GetComponent<Rigidbody>().mass * Input.GetAxis ("Steering_P" + playerID) * 100);
 			GetComponent<Rigidbody>().AddTorque(transform.right * GetComponent<Rigidbody>().mass * Input.GetAxis ("Acceleration_P" + playerID) * 100);
-		}
+		}*/
 
 		fireGunTimer -= Time.deltaTime;
 		
 		if (fireGunTimer <= 0) {
-			if (Input.GetButtonDown ("Fire_P" + playerID)) {
+			if (Input.GetButtonDown ("Fire" + playerID)) {
 				GameObject clone;
 				clone = (GameObject)Instantiate (projectile, Spawnpoint.position + transform.forward * 5, projectile.transform.rotation);
 				
