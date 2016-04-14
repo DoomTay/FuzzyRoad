@@ -40,22 +40,20 @@ public class Car : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-//		print (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z);
 		healthBar.value = health;
-		if (!InAir ()) {
-			foreach (WheelCollider wheel in wheels) {
-				wheel.motorTorque = speed * 10000 * Input.GetAxis ("Vertical" + playerID);
-				if (OppositeSides (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis ("Vertical" + playerID))) {
-					wheel.brakeTorque = 10000 * speed;
-				} else
-					wheel.brakeTorque = 0;
-			}
-
-			foreach (WheelCollider frontWheel in frontWheels) {
-				frontWheel.steerAngle = 30 * Input.GetAxis ("Horizontal" + playerID);
-			}
+		print (Input.GetAxis ("Horizontal" + playerID));
+		foreach (WheelCollider wheel in wheels) {
+			wheel.motorTorque = speed * 10000 * Input.GetAxis ("Vertical" + playerID);
+			if (OppositeSides (transform.InverseTransformDirection (GetComponent<Rigidbody> ().velocity).z, Input.GetAxis ("Vertical" + playerID)) || Mathf.Approximately(Input.GetAxis ("Vertical" + playerID),0)) {
+				wheel.brakeTorque = 10000 * speed;
+			} else
+				wheel.brakeTorque = 0;
 		}
-		/*else {
+
+		foreach (WheelCollider frontWheel in frontWheels) {
+			frontWheel.steerAngle = 30 * Input.GetAxis ("Horizontal" + playerID);
+		}
+		/*if (InAir ()) {
 			GetComponent<Rigidbody>().AddTorque(transform.forward * GetComponent<Rigidbody>().mass * Input.GetAxis ("Steering_P" + playerID) * 100);
 			GetComponent<Rigidbody>().AddTorque(transform.right * GetComponent<Rigidbody>().mass * Input.GetAxis ("Acceleration_P" + playerID) * 100);
 		}*/
