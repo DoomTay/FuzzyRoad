@@ -19,8 +19,7 @@ public class Projectile : MonoBehaviour {
 
 	void OnCollisionEnter(Collision _collision)
 	{
-		if(_collision.gameObject.GetComponent<Projectile>()) Physics.IgnoreCollision(GetComponent<Collider> (), _collision.collider, true); 
-		else if (_collision.gameObject != owner) {
+		if (_collision.gameObject != owner && !_collision.gameObject.GetComponent<Projectile>()) {
 			if (_collision.gameObject.GetComponent<CarController> ())
 				_collision.gameObject.GetComponent<CarController> ().Damage (damage, owner);
 			Destroy (gameObject);

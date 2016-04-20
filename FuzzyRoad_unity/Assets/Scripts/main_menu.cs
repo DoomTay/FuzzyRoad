@@ -9,9 +9,10 @@ public class main_menu : MonoBehaviour
 	public Button exitText;
     public Button controls;
     public Button exitControls;
+	public bool[] ready = new bool[] {false,false,false,false};
+	private bool[] heldDown = new bool[] {false,false,false,false};
 
 	void Start ()
-
 	{
 		if(startMenu) startMenu = startMenu.GetComponent<Canvas>();
 		if(startText) startText = startText.GetComponent<Button> ();
@@ -20,6 +21,39 @@ public class main_menu : MonoBehaviour
 		if(exitControls) exitControls = exitControls.GetComponent<Button>();
 		if(startMenu) startMenu.enabled = true;
 
+	}
+
+	void Update ()
+	{
+		if (Application.loadedLevelName == "Character_Select") {
+			for (var i = 0; i < 4; i++) {
+				if (Input.GetButtonDown ("Fire" + (i + 1))) {
+					ready [i] = !ready [i];
+					GameObject.Find ("P" + (i + 1) + "Array").GetComponent<Rotate> ().enabled = !ready [i];
+				}
+				if (Input.GetAxis ("Horizontal" + (i + 1)) > 0 && heldDown [i] == false && !ready [i]) {
+					IncrementSelection (i);
+					heldDown [i] = true;
+				} else if (Input.GetAxis ("Horizontal" + (i + 1)) < 0 && heldDown [i] == false && !ready [i]) {
+					DecrementSelection (i);
+					heldDown [i] = true;
+				}
+			else if (Input.GetAxis ("Horizontal" + (i + 1)) == 0) {
+					heldDown [i] = false;
+				}
+			}
+			if (everyoneReady ())
+				BeginGame ();
+		}
+	}
+
+	bool everyoneReady()
+	{
+		for (var i = 0; i < 4; i++) {
+			if (ready [i] == false)
+				return false;
+		}
+		return true;
 	}
 
 	public void ExitPress() //this function will be used on our Exit button
