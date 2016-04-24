@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 	//Need to setup a UI display for these.
-	public GameObject[] players;
+	public static GameObject[] players = new GameObject[4];
 	public int maxPoints = 15;
     public int score;
 	public GameObject[] carSet;
@@ -57,20 +57,18 @@ public class GameManager : MonoBehaviour {
 		SpawnCars ();
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		//check when player reaches or exceeds maxPoints.
-		foreach(GameObject player in players)
-		{
-			if(!player) break;
-			if(player.GetComponent<CarController>().score >= maxPoints && gameEnded == false)
-			{
-				StartCoroutine("Winner", player);
+		foreach (GameObject player in players) {
+			if (!player)
+				break;
+			if (player.GetComponent<CarController> ().score >= maxPoints && gameEnded == false) {
+				StartCoroutine ("Winner", player);
 				break;
 			}
 		}
-		
 	}
 
 	public IEnumerator BeginMatch () {
@@ -186,6 +184,7 @@ public class GameManager : MonoBehaviour {
 			players[i] = newCar;
 			GameObject newCamera = (GameObject)Instantiate (camera, spawnPoint.position, spawnPoint.rotation);
 			newCamera.GetComponent<LevelCamera>().car = newCar.transform;
+			GameObject.Find("P" + (i + 1) + "Mask").GetComponent<NavPointers>().cam = newCamera;
 			if (charChoices [i] == 3)
 				newCamera.GetComponent<LevelCamera> ().Offset = new Vector3 (0, 12, -13);
 			newCamera.GetComponent<Camera>().rect = new Rect(cameraDimensions[i],new Vector2(0.5f,0.5f));
