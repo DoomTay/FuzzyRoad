@@ -2,15 +2,18 @@
 using System.Collections;
 
 public class CaptureZone : MonoBehaviour {
+
+	public GameObject captureFlash;
+	public AudioClip captureRiff;
     
 	// Use this for initialization
 	void Start () {
-	
+		captureFlash.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(!captureFlash.GetComponent<ParticleSystem>().IsAlive()) captureFlash.SetActive (false);
 	}
 
 	void OnTriggerEnter(Collider col)
@@ -22,6 +25,8 @@ public class CaptureZone : MonoBehaviour {
 			captor.hasFlag = false;
             captor.flagCapture++;
 			captor.score += 3;
+			captureFlash.SetActive (true);
+			culprit.GetComponent<AudioSource> ().PlayOneShot (captureRiff);
 			flag.transform.parent = null;
 			flag.transform.position = flag.GetComponent<Flag>().initialPos;
 			flag.transform.rotation = flag.GetComponent<Flag>().initialRot;
