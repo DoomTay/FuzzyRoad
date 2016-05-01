@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour {
 
 		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
 			//StartCoroutine ("DefaultSpawn");
-			charChoices = new int[] {0,3,0,0};
+			charChoices = new int[] {3,0,0,0};
 			SpawnCars ();
 		}
 	}
