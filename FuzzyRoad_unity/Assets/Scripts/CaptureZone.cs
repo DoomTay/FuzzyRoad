@@ -30,6 +30,7 @@ public class CaptureZone : MonoBehaviour {
 			flag.transform.parent = null;
 			flag.transform.position = flag.GetComponent<Flag>().initialPos;
 			flag.transform.rotation = flag.GetComponent<Flag>().initialRot;
+			flag.GetComponent<Rigidbody> ().isKinematic = false;
 			flag.GetComponent<Collider> ().enabled = true;
 		}
 	}

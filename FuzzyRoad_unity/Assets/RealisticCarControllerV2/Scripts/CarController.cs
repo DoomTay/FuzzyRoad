@@ -529,6 +529,7 @@ public class CarController: MonoBehaviour {
 			hasFlag = false;
 			flag.transform.parent = null;
 			flag.transform.rotation = flag.GetComponent<Flag>().initialRot;
+			flag.GetComponent<Rigidbody> ().isKinematic = false;
 			flag.GetComponent<Collider> ().enabled = true;
 		}
 		KillOrStartEngine (0);

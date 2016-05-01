@@ -38,17 +38,19 @@ public class GameManager : MonoBehaviour {
 			
 		}
 
-		/*if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
-			StartCoroutine ("DefaultSpawn");
-		}*/
+		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
+			//StartCoroutine ("DefaultSpawn");
+			charChoices = new int[] {0,3,0,0};
+			SpawnCars ();
+		}
 	}
 
 	public IEnumerator DefaultSpawn () {
 		while (levelLoaded == false) {
-			/*if (charChoices.Length == 0 && !levelLoaded)
+			if (charChoices.Length == 0 && !levelLoaded)
 				break;
 			else if (charChoices.Length > 0)
-				StopCoroutine ("DefaultSpawn");*/
+				StopCoroutine ("DefaultSpawn");
 			yield return new WaitForEndOfFrame();
 
 		}

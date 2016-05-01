@@ -14,7 +14,7 @@ public class Flag : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		//GetComponent<Rigidbody> ().useGravity = GetComponent<CapsuleCollider> ().enabled;
 	}
 
 	void OnTriggerEnter(Collider col)
@@ -22,11 +22,13 @@ public class Flag : MonoBehaviour {
 		GameObject culprit = col.transform.root.gameObject;
 		if (culprit.GetComponent<CarController> () && transform.parent != transform.root) {
 			transform.parent = culprit.transform;
-			Transform mount = culprit.transform.Find("FlagMount");
+			Transform mount = culprit.transform.Find ("FlagMount");
 			transform.position = mount.position;
 			transform.rotation = mount.rotation;
 			culprit.GetComponent<CarController> ().hasFlag = true;
+			GetComponent<Rigidbody> ().isKinematic = true;
 			GetComponent<Collider> ().enabled = false;
-		}
+		} else
+			GetComponent<Rigidbody> ().isKinematic = true;
 	}
 }
