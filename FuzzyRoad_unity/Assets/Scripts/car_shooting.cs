@@ -31,7 +31,7 @@ public class car_shooting : MonoBehaviour {
 				clone = (GameObject)Instantiate (projectile, Spawnpoint.position + transform.forward * 5, transform.rotation);
 				clone.GetComponent<Projectile> ().owner = gameObject;
 
-				clone.GetComponent<Rigidbody> ().velocity = Spawnpoint.TransformDirection (Vector3.forward * 80);
+				clone.GetComponent<Rigidbody> ().velocity = Spawnpoint.TransformDirection (Vector3.forward * 160);
 
 				fireGunTimer = FIRE_GUN_COOLDOWN;
 

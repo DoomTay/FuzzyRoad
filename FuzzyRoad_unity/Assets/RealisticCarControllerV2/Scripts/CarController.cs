@@ -9,7 +9,7 @@ using UnityEngine.UI;
 [RequireComponent (typeof(Rigidbody))]
 public class CarController: MonoBehaviour {
 
-	public GameObject Smoke;
+	private GameObject Smoke;
 	public int playerID;
 	public int health = 100;
 	int damage = 3;
