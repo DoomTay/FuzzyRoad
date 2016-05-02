@@ -488,10 +488,10 @@ public class CarController: MonoBehaviour {
 			if (dashBoard && canControl)
 				DashboardGUI ();
 		}
-		if (health >= 100) {
+		if (health >= 41) {
 			Smoke.SetActive (false);
 		}
-		else if (health < 75) { //smoke should be popping up, for some reason the car starts to automatically reverse, no control.
+		else if (health < 40) { //smoke should be popping up, for some reason the car starts to automatically reverse, no control.
 			Smoke.SetActive (true);
 		} 
 
