@@ -5,7 +5,6 @@ using System.Collections;
 [RequireComponent(typeof(CarController))]
 public class car_shooting : MonoBehaviour {
 
-	public int health = 100;
 	public int damage = 3;
 
     public AudioClip fireSound;
@@ -13,7 +12,7 @@ public class car_shooting : MonoBehaviour {
     public GameObject projectile;
 	public Transform Spawnpoint;
 
-	private const float FIRE_GUN_COOLDOWN = .1f;
+	public float fireRate = .1f;
 	private float fireGunTimer;
 
 	// Use this for initialization
@@ -30,13 +29,11 @@ public class car_shooting : MonoBehaviour {
 				GameObject clone;
 				clone = (GameObject)Instantiate (projectile, Spawnpoint.position, Spawnpoint.transform.rotation);
 				clone.GetComponent<Projectile> ().owner = gameObject;
+				clone.GetComponent<Projectile> ().damage = damage;
 
 				clone.GetComponent<Rigidbody> ().velocity = Spawnpoint.TransformDirection (Vector3.forward * 80);
 
-				fireGunTimer = FIRE_GUN_COOLDOWN;
-
-				//Destroy(projectile, 2);
-				//Destroy(Bullet_Clone, 2);
+				fireGunTimer = fireRate;
 			}
 			if (Input.GetButton ("Fire" + GetComponent<CarController> ().playerID) && !sound.isPlaying) {
 				sound.Play ();
