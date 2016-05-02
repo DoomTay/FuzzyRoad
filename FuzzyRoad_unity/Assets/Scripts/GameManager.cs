@@ -38,11 +38,11 @@ public class GameManager : MonoBehaviour {
 			
 		}
 
-		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
+		/*if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
 			//StartCoroutine ("DefaultSpawn");
 			charChoices = new int[] {3,0,0,0};
 			SpawnCars ();
-		}
+		}*/
 	}
 
 	public IEnumerator DefaultSpawn () {

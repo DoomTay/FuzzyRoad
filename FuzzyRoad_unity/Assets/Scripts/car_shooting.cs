@@ -35,8 +35,6 @@ public class car_shooting : MonoBehaviour {
 
 				fireGunTimer = FIRE_GUN_COOLDOWN;
 
-				print ("firing");
-
 				//Destroy(projectile, 2);
 				//Destroy(Bullet_Clone, 2);
 			}
