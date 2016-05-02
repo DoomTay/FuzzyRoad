@@ -115,9 +115,9 @@ public class GameManager : MonoBehaviour {
             double kda;
 			if(deathSet[i] == 0)
                 kda = killSet[i];
-			else kda =
-                    (double) (killSet[i] / deathSet[i]);
-			GameObject.Find("kda" + (i + 1)).GetComponent<Text>().text = kda.ToString();
+			else
+                kda = (double)killSet[i] / (double)deathSet[i];
+			GameObject.Find("kda" + (i + 1)).GetComponent<Text>().text = kda.ToString("#.##");
         }
     }
 
