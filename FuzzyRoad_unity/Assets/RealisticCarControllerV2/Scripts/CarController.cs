@@ -676,7 +676,7 @@ public class CarController: MonoBehaviour {
 	public void Braking (){
 
 		//Handbrake
-		if(Input.GetButton("Jump") || mobileHandbrake){
+		if(mobileHandbrake){
 
 			//FrontLeftWheelCollider.brakeTorque = (brake / 2.5f);
 			//FrontRightWheelCollider.brakeTorque = (brake / 2.5f);
@@ -907,12 +907,6 @@ public class CarController: MonoBehaviour {
 			steerInput = Mathf.Lerp (steerInput, Input.GetAxis("Horizontal" + playerID), Time.deltaTime * 10);
 		else
 			steerInput = Mathf.Lerp (steerInput, Input.GetAxis("Horizontal" + playerID), Time.deltaTime * 10);
-
-		//Boost Input.
-		if(Input.GetButton("Fire" + playerID))
-			boostInput = 1.5f;
-		else
-			boostInput = 1f;
 
 		FrontLeftWheelCollider.steerAngle = (steerAngle * steerInput);
 		FrontRightWheelCollider.steerAngle = (steerAngle * steerInput);
