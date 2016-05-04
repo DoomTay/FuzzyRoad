@@ -33,7 +33,7 @@ ModelImporter:
     4300006: group6_group5_group4_group3_pCube1
     4300008: pSphere1_group6_group5_group4_group3
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:

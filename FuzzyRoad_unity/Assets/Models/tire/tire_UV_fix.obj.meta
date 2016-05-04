@@ -13,7 +13,7 @@ ModelImporter:
     3300000: tire_UV:pasted__pCylinder1
     4300000: tire_UV:pasted__pCylinder1
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
