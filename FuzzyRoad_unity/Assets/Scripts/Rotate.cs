@@ -13,12 +13,7 @@ public class Rotate : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		transform.Rotate (Vector3.down * 1.5f);
-
-		if (Input.GetButtonDown ("Fire1")) {
-		
-			transform.Rotate(0, speed*Time.deltaTime,0);
-		}
+		transform.Rotate(0, speed*Time.deltaTime,0);
 	
 	}
 }
