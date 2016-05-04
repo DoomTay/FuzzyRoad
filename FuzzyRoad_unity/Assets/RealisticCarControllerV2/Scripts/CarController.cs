@@ -34,11 +34,6 @@ public class CarController: MonoBehaviour {
 	public MobileGUIType _mobileControllerType;
 	public enum MobileGUIType{UIController, NGUIController}
 
-	//Dashboard Type.
-	public bool dashBoard = false;
-	public DashboardType _dashboardType;
-	public enum DashboardType{UIDashboard, NGUIDashboard}
-
 	public bool useAccelerometerForSteer = false, steeringWheelControl = false;
 	public float gyroTiltMultiplier = 2.0f;
 
@@ -50,12 +45,6 @@ public class CarController: MonoBehaviour {
 
 	//Finds all buttons when new vehicle spawned. Useful for spawning new vehicles on your scene at runtime.
 	public bool autoFindButtons = true;
-
-	//NGUI Controller Elements.
-	//If boost UI is selected, will multiply default engine torque by 1.5.
-	public RCCNGUIController gasPedal, brakePedal, leftArrow, rightArrow, handbrakeGui, boostGui;
-	//UI Controller Elements.
-	public RCCUIController gasPedalUI, brakePedalUI, leftArrowUI, rightArrowUI, handbrakeUI, boostUI;
 
 	// Wheel Transforms Of The Vehicle.
 	public Transform FrontLeftWheelTransform;
@@ -168,22 +157,6 @@ public class CarController: MonoBehaviour {
 	[HideInInspector]
 	public float engineRPM = 0f;
 
-	//UI DashBoard.
-	public RCCDashboardInputs UIInputs;
-	private RectTransform RPMNeedle;
-	private RectTransform KMHNeedle;
-	private float RPMNeedleRotation = 0.0f;
-	private float KMHNeedleRotation = 0.0f;
-	private float smoothedNeedleRotation = 0.0f;
-
-	//NGUI Dashboard.
-	public GameObject RPMNeedleNGUI;
-	public GameObject KMHNeedleNGUI;
-	public float minimumRPMNeedleAngle = 20.0f;
-	public float maximumRPMNeedleAngle = 160.0f;
-	public float minimumKMHNeedleAngle = -25.0f;
-	public float maximumKMHNeedleAngle = 155.0f;
-
 	//Smokes.
 	public GameObject wheelSlipPrefab;
 	private List <ParticleSystem> _wheelParticles = new List<ParticleSystem>();
@@ -235,46 +208,7 @@ public class CarController: MonoBehaviour {
 		explosion = transform.Find("Explosion").gameObject;
 		explosion.SetActive (false);
 
-		if(dashBoard){
-
-			UIInputs = GameObject.FindObjectOfType<RCCDashboardInputs>();
-			UIInputs.GetNeedles();
-
-			if(_dashboardType == DashboardType.NGUIDashboard){
-				RPMNeedleNGUI = UIInputs.RPMNeedleNGUI;
-				KMHNeedleNGUI = UIInputs.KMHNeedleNGUI;
-			}else{
-				RPMNeedle = UIInputs.RPMNeedleUI;
-				KMHNeedle = UIInputs.KMHNeedleUI;
-			}
-		}
-
-		if(autoFindButtons && mobileController){
-
-			RCCMobileButtons UIButtons = GameObject.FindObjectOfType<RCCMobileButtons>();
-
-			if(_mobileControllerType == MobileGUIType.NGUIController){
-				gasPedal = UIButtons.gasButton.GetComponent<RCCNGUIController>();
-				brakePedal = UIButtons.brakeButton.GetComponent<RCCNGUIController>();
-				leftArrow = UIButtons.leftButton.GetComponent<RCCNGUIController>();
-				rightArrow = UIButtons.rightButton.GetComponent<RCCNGUIController>();
-				handbrakeGui = UIButtons.handbrakeButton.GetComponent<RCCNGUIController>();
-				if(UIButtons.boostButton)
-					boostGui = UIButtons.boostButton.GetComponent<RCCNGUIController>();
-			}else{
-				gasPedalUI = UIButtons.gasButton.GetComponent<RCCUIController>();
-				brakePedalUI = UIButtons.brakeButton.GetComponent<RCCUIController>();
-				leftArrowUI = UIButtons.leftButton.GetComponent<RCCUIController>();
-				rightArrowUI = UIButtons.rightButton.GetComponent<RCCUIController>();
-				handbrakeUI = UIButtons.handbrakeButton.GetComponent<RCCUIController>();
-				if(UIButtons.boostButton)
-					boostUI = UIButtons.boostButton.GetComponent<RCCUIController>();
-			}
-
-		}
-
 		SoundsInitialize();
-		MobileGUI();
 		SteeringWheelInit();
 		SmokeInit();
 
@@ -444,18 +378,6 @@ public class CarController: MonoBehaviour {
 
 	}
 
-	public void MobileGUI (){
-
-		if(mobileController){
-			if(_mobileControllerType == MobileGUIType.NGUIController){
-				defbrakePedalPosition = brakePedal.transform.position;
-			}else{
-				defbrakePedalPosition = brakePedalUI.transform.position;
-			}
-		}
-
-	}
-
 	void Update (){
 		if(healthBar) healthBar.value = health;
 		if(scoreDisplay) scoreDisplay.text = score.ToString();
@@ -464,10 +386,6 @@ public class CarController: MonoBehaviour {
 		if (health > 0) {
 			if (canControl) {
 				if (mobileController) {
-					if (_mobileControllerType == MobileGUIType.NGUIController)
-						NGUIControlling ();
-					if (_mobileControllerType == MobileGUIType.UIController)
-						UIControlling ();
 					MobileSteeringInputs ();
 					if (steeringWheelControl)
 						SteeringWheelControlling ();
@@ -485,8 +403,6 @@ public class CarController: MonoBehaviour {
 
 			if (chassis)
 				Chassis ();
-			if (dashBoard && canControl)
-				DashboardGUI ();
 		}
 		if (health >= 41) {
 			Smoke.SetActive (false);
@@ -548,6 +464,9 @@ public class CarController: MonoBehaviour {
 		foreach (Collider collider in colliders) {
 			collider.enabled = false;
 		}
+		foreach (Rigidbody rb in rbs) {
+			rb.useGravity = false;
+		}
 		GetComponent<Rigidbody> ().useGravity = false;
 
 		Smoke.SetActive (false);
@@ -563,6 +482,9 @@ public class CarController: MonoBehaviour {
 		}
 		foreach (Collider collider in colliders) {
 			collider.enabled = true;
+		}
+		foreach (Rigidbody rb in rbs) {
+			rb.useGravity = true;
 		}
 		GetComponent<Rigidbody> ().useGravity = true;
 		destroyed = false;
@@ -913,54 +835,6 @@ public class CarController: MonoBehaviour {
 
 	}
 
-	public void NGUIControlling (){
-
-		//Motor Input.
-		if(!changingGear)
-			motorInput = gasPedal.input + (-brakePedal.input);
-		else
-			motorInput = (-brakePedal.input);
-
-		//Steer Input.
-		if(!useAccelerometerForSteer && !steeringWheelControl)
-			steerInput = rightArrow.input + (-leftArrow.input);
-
-		//Handbrake Input.
-		if(handbrakeGui.input > .1f)
-			mobileHandbrake = true;
-		else
-			mobileHandbrake = false;
-
-		//Boost Input.
-		if(boostGui)
-			boostInput = Mathf.Clamp(boostGui.input * 2f, 1f, 1.5f);
-
-	}
-
-	public void UIControlling (){
-
-		//Motor Input.
-		if(!changingGear)
-			motorInput = gasPedalUI.input + (-brakePedalUI.input);
-		else
-			motorInput = (-brakePedalUI.input);
-
-		//Steer Input.
-		if(!useAccelerometerForSteer && !steeringWheelControl)
-			steerInput = rightArrowUI.input + (-leftArrowUI.input);
-
-		//Handbrake Input.
-		if(handbrakeUI.input > .1f)
-			mobileHandbrake = true;
-		else
-			mobileHandbrake = false;
-
-		//Boost Input.
-		if(boostUI)
-			boostInput = Mathf.Clamp(boostUI.input * 2f, 1f, 1.5f);
-
-	}
-
 	public void ShiftGears (){
 
 		if(automaticGear){
@@ -1146,52 +1020,6 @@ public class CarController: MonoBehaviour {
 
 	}
 
-	public void DashboardGUI (){
-
-		if(_dashboardType == DashboardType.NGUIDashboard){
-
-			if(!UIInputs){
-				Debug.LogError("If you gonna use NGUI Dashboard, your NGUI Root must have ''RCCNGUIDashboardInputs''. First be sure your NGUI Root has ''RCCNGUIDashboardInputs.cs''.");
-				dashBoard = false;
-				return;
-			}
-
-			UIInputs.RPM = engineRPM;
-			UIInputs.KMH = speed;
-			UIInputs.Gear = FrontLeftWheelCollider.rpm > -10 ? currentGear : -1f;
-
-			RPMNeedleRotation = Mathf.Lerp (minimumRPMNeedleAngle, maximumRPMNeedleAngle, (engineRPM - minEngineRPM / 1.5f) / (maxEngineRPM + minEngineRPM));
-			KMHNeedleRotation = Mathf.Lerp (minimumKMHNeedleAngle, maximumKMHNeedleAngle, speed / maxspeed);
-			smoothedNeedleRotation = Mathf.Lerp (smoothedNeedleRotation, RPMNeedleRotation, Time.deltaTime * 5);
-
-			RPMNeedleNGUI.transform.eulerAngles = new Vector3(RPMNeedleNGUI.transform.eulerAngles.x ,RPMNeedleNGUI.transform.eulerAngles.y, -smoothedNeedleRotation);
-			KMHNeedleNGUI.transform.eulerAngles = new Vector3(KMHNeedleNGUI.transform.eulerAngles.x ,KMHNeedleNGUI.transform.eulerAngles.y, -KMHNeedleRotation);
-
-		}
-
-		if(_dashboardType == DashboardType.UIDashboard){
-
-			if(!UIInputs){
-				Debug.LogError("If you gonna use UI Dashboard, your Canvas Root must have ''RCCUIDashboardInputs''. First be sure your Canvas Root has ''RCCUIDashboardInputs.cs''.");
-				dashBoard = false;
-				return;
-			}
-
-			UIInputs.RPM = engineRPM;
-			UIInputs.KMH = speed;
-			UIInputs.Gear = FrontLeftWheelCollider.rpm > -10 ? currentGear : -1f;
-
-			RPMNeedleRotation = Mathf.Lerp (minimumRPMNeedleAngle, maximumRPMNeedleAngle, (engineRPM - minEngineRPM / 1.5f) / (maxEngineRPM + minEngineRPM));
-			KMHNeedleRotation = Mathf.Lerp (minimumKMHNeedleAngle, maximumKMHNeedleAngle, speed / maxspeed);
-			smoothedNeedleRotation = Mathf.Lerp (smoothedNeedleRotation, RPMNeedleRotation, Time.deltaTime * 5);
-
-			RPMNeedle.transform.eulerAngles = new Vector3(RPMNeedle.transform.eulerAngles.x ,RPMNeedle.transform.eulerAngles.y, -smoothedNeedleRotation);
-			KMHNeedle.transform.eulerAngles = new Vector3(KMHNeedle.transform.eulerAngles.x ,KMHNeedle.transform.eulerAngles.y, -KMHNeedleRotation);
-
-		}
-
-	}
-
 	public void SmokeWeedEveryday () {
 
 		for(int i = 0; i < allWheelColliders.Length; i++){
@@ -1373,58 +1201,8 @@ public class CarController: MonoBehaviour {
 
 		GUI.skin.label.fontSize = 12;
 		GUI.skin.box.fontSize = 12;
-		Matrix4x4 orgRotation = GUI.matrix;
 
 		if(canControl){
-
-			if(useAccelerometerForSteer && mobileController){
-				if(_mobileControllerType == MobileGUIType.NGUIController){
-					leftArrow.gameObject.SetActive(false);
-					rightArrow.gameObject.SetActive(false);
-					handbrakeGui.gameObject.SetActive(true);
-					brakePedal.transform.position = leftArrow.transform.position;
-				}
-				if(_mobileControllerType == MobileGUIType.UIController){
-					leftArrowUI.gameObject.SetActive(false);
-					rightArrowUI.gameObject.SetActive(false);
-					handbrakeUI.gameObject.SetActive(true);
-					brakePedalUI.transform.position = leftArrowUI.transform.position;
-				}
-				steeringWheelControl = false;
-			}else if(mobileController){
-				if(_mobileControllerType == MobileGUIType.NGUIController){
-					gasPedal.gameObject.SetActive(true);
-					leftArrow.gameObject.SetActive(true);
-					rightArrow.gameObject.SetActive(true);
-					handbrakeGui.gameObject.SetActive(true);
-					brakePedal.transform.position = defbrakePedalPosition;
-				}
-				if(_mobileControllerType == MobileGUIType.UIController){
-					gasPedalUI.gameObject.SetActive(true);
-					leftArrowUI.gameObject.SetActive(true);
-					rightArrowUI.gameObject.SetActive(true);
-					handbrakeUI.gameObject.SetActive(true);
-					brakePedalUI.gameObject.SetActive(true);
-					brakePedalUI.transform.position = defbrakePedalPosition;
-				}
-			}
-
-			if(steeringWheelControl && mobileController){
-
-				if(_mobileControllerType == MobileGUIType.NGUIController){
-					leftArrow.gameObject.SetActive(false);
-					rightArrow.gameObject.SetActive(false);
-				}
-				if(_mobileControllerType == MobileGUIType.UIController){
-					leftArrowUI.gameObject.SetActive(false);
-					rightArrowUI.gameObject.SetActive(false);
-				}
-
-				GUIUtility.RotateAroundPivot( -steeringWheelsteerAngle , steeringWheelTextureRect.center + steeringWheelPivotPos );
-				GUI.DrawTexture( steeringWheelTextureRect, steeringWheelTexture );
-				GUI.matrix = orgRotation;
-
-			}
 
 			if( demoGUI ) {
 
