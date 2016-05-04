@@ -12,7 +12,11 @@ public class GameManager : MonoBehaviour {
 
 	private Vector2[] cameraDimensions = {new Vector2(0,0.5f),new Vector2(0.5f,0.5f),new Vector2(0,0),new Vector2(0.5f,0)};
 
+	private GameObject[] hudCorners = new GameObject[4];
+
 	public int[] charChoices = new int[4];
+
+	public static int playerCount = 3;
 
 	bool gameEnded = false;
 
@@ -38,9 +42,16 @@ public class GameManager : MonoBehaviour {
 			
 		}
 
+		for (int i = 0; i < 4; i++) {
+			if (GameObject.Find ("P" + (i + 1) + "Group")) {
+				hudCorners [i] = GameObject.Find ("P" + (i + 1) + "Group");
+				hudCorners [i].SetActive (false);
+			}
+		}
+
 		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
 			//StartCoroutine ("DefaultSpawn");
-			charChoices = new int[] {3,0,0,0};
+			charChoices = new int[] {0,0,0,0};
 			SpawnCars ();
 		}
 	}
@@ -107,7 +118,7 @@ public class GameManager : MonoBehaviour {
     public void winState (int[] killSet, int[] deathSet, int[] scoreSet, int[] flagCaptureSet) {
         print (killSet);
 		print (deathSet);
-        for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < playerCount; i++) {
             GameObject.Find("k" + (i + 1)).GetComponent<Text>().text = killSet[i].ToString();
 			GameObject.Find("d" + (i + 1)).GetComponent<Text>().text = deathSet[i].ToString();
             GameObject.Find("p" + (i + 1)).GetComponent<Text>().text = scoreSet[i].ToString();
@@ -126,11 +137,15 @@ public class GameManager : MonoBehaviour {
 		GameObject.Find ("Timer").GetComponent<Text> ().text = "Time's up";
 		gameEnded = true;
 		yield return new WaitForSeconds(5);
-		int[] kills = new int[4];
-		int [] deaths = new int[4];
-		int[] score = new int[4];
-		int[] flagCap = new int[4];
-		for (int i = 0; i < 4; i++) {
+		StartCoroutine ("GoToScoreboard");
+	}
+
+	IEnumerator GoToScoreboard (){
+		int[] kills = new int[playerCount];
+		int [] deaths = new int[playerCount];
+		int[] score = new int[playerCount];
+		int[] flagCap = new int[playerCount];
+		for (int i = 0; i < playerCount; i++) {
 			kills[i] = players[i].GetComponent<CarController>().kills;
 			deaths[i] = players[i].GetComponent<CarController>().deaths;
 			score[i] = players[i].GetComponent<CarController>().score;
@@ -153,34 +168,17 @@ public class GameManager : MonoBehaviour {
 		GameObject.Find ("Timer").GetComponent<Text> ().text = winner.name + " wins";
 		gameEnded = true;
 		yield return new WaitForSeconds(5);
-		int[] kills = new int[4];
-		int [] deaths = new int[4];
-        int[] score = new int[4];
-        int[] flagCap = new int[4];
-		for (int i = 0; i < 4; i++) {
-			kills[i] = players[i].GetComponent<CarController>().kills;
-			deaths[i] = players[i].GetComponent<CarController>().deaths;
-            score[i] = players[i].GetComponent<CarController>().score;
-            flagCap[i] = players[i].GetComponent<CarController>().flagCapture;
-		}
-		Application.LoadLevel ("Win State");
-		levelLoaded = false;
-		
-		while (levelLoaded == false) {
-			
-			yield return new WaitForEndOfFrame();
-			
-		}
-        winState(kills, deaths, score, flagCap);
+		StartCoroutine ("GoToScoreboard");
 	}
 
 	public void SpawnCars()
 	{
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < playerCount; i++) {
 			Transform spawnPoint = GameObject.Find ("SpawnPoint" + (i + 1)).transform;
 			GameObject newCar = (GameObject)Instantiate (carSet[charChoices[i]], spawnPoint.position, spawnPoint.rotation);
 			newCar.name = "Player " + (i + 1);
 			newCar.GetComponent<CarController>().playerID = (i + 1);
+			hudCorners[i].SetActive (true);
 			newCar.GetComponent<CarController>().healthBar = GameObject.Find ("P" + (i + 1) + "Health").GetComponent<Slider>();
 			newCar.GetComponent<CarController>().scoreDisplay = GameObject.Find ("P" + (i + 1) + "Score").GetComponent<Text>();
 			players[i] = newCar;
