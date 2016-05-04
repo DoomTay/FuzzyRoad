@@ -9,7 +9,9 @@ public class NavPointers : MonoBehaviour {
 	void Start () {
 		for(var i = GameManager.playerCount; i < 4; i++)
 		{
-			transform.Find ("P" + (i + 1) + "Ind").gameObject.SetActive (false);
+			if (cam && cam.GetComponent<LevelCamera> ().car.gameObject != GameManager.players [i]) {
+				transform.Find ("P" + (i + 1) + "Ind").gameObject.SetActive (false);
+			}
 		}
 	}
 	

@@ -9,8 +9,8 @@ public class main_menu : MonoBehaviour
 	public Button exitText;
     public Button controls;
     public Button exitControls;
-	public bool[] ready = new bool[] {false,false,false,false};
-	private bool[] heldDown = new bool[] {false,false,false,false};
+	public bool[] ready = new bool[4];
+	private bool[] heldDown = new bool[4];
 
 	void Start ()
 	{
@@ -20,13 +20,21 @@ public class main_menu : MonoBehaviour
 		if(controls) controls = controls.GetComponent<Button>();
 		if(exitControls) exitControls = exitControls.GetComponent<Button>();
 		if(startMenu) startMenu.enabled = true;
+		for (var i = 0; i < 4; i++) {
+			ready [i] = false;
+			heldDown [i] = false;
+		}
+
+		for (var k = GameManager.playerCount; k < 4; k++) {
+			if(GameObject.Find ("Cam" + k)) GameObject.Find ("Cam" + k).SetActive(false);
+		}
 
 	}
 
 	void Update ()
 	{
 		if (Application.loadedLevelName == "Character_Select") {
-			for (var i = 0; i < 4; i++) {
+			for (var i = 0; i < GameManager.playerCount; i++) {
 				if (Input.GetButtonDown ("Fire" + (i + 1))) {
 					ready [i] = !ready [i];
 					GameObject.Find ("P" + (i + 1) + "Array").GetComponent<Rotate> ().enabled = !ready [i];
@@ -49,7 +57,7 @@ public class main_menu : MonoBehaviour
 
 	bool everyoneReady()
 	{
-		for (var i = 0; i < 4; i++) {
+		for (var i = 0; i < GameManager.playerCount; i++) {
 			if (ready [i] == false)
 				return false;
 		}
@@ -74,10 +82,17 @@ public class main_menu : MonoBehaviour
 
 	}
 
-	public void StartLevel () //this function will be used on our Play button
+	public void playerSelect()
 	{
-		Application.LoadLevel ("Character_Select"); //this will load our first level from our build settings. "1" is the second scene in our game
+		Application.LoadLevel ("PlayerCount");
 		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+	}
+
+	public void StartLevel (int count) //this function will be used on our Play button
+	{
+		Application.LoadLevel ("Character_Select");
+		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+		GM.setPlayerCount (count);
 		GM.charChoices = new int[] {0,0,0,0};
 	}
 
@@ -94,6 +109,7 @@ public class main_menu : MonoBehaviour
 
 	public void IncrementSelection(int index)
 	{
+		print (Input.GetAxis ("Horizontal" + (index + 1)));
 		GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
 		Transform carDisplay = GameObject.Find ("P" + (index + 1) + "Array").transform;
 		if (GM.charChoices [index] == GM.carSet.Length - 1) {

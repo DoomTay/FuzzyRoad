@@ -4,21 +4,24 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 	//Need to setup a UI display for these.
-	public static GameObject[] players = new GameObject[4];
+	public static GameObject[] players = new GameObject[playerCount];
 	public int maxPoints = 50;
     public int score;
 	public GameObject[] carSet;
 	public GameObject camera;
 
-	private Vector2[] cameraDimensions = {new Vector2(0,0.5f),new Vector2(0.5f,0.5f),new Vector2(0,0),new Vector2(0.5f,0)};
+	private Vector2[] fourPlayerCameraDimensions = {new Vector2(0,0.5f),new Vector2(0.5f,0.5f),new Vector2(0,0),new Vector2(0.5f,0)};
+	private Vector2[] twoPlayerCameraDimensions = {new Vector2(0,0.5f),new Vector2(0,0)};
 
 	private GameObject[] hudCorners = new GameObject[4];
 
 	public int[] charChoices = new int[4];
 
-	public static int playerCount = 3;
+	public static int playerCount = 2;
 
 	bool gameEnded = false;
+
+	private GameObject hud;
 
 	public bool levelLoaded;
 
@@ -42,18 +45,12 @@ public class GameManager : MonoBehaviour {
 			
 		}
 
-		for (int i = 0; i < 4; i++) {
-			if (GameObject.Find ("P" + (i + 1) + "Group")) {
-				hudCorners [i] = GameObject.Find ("P" + (i + 1) + "Group");
-				hudCorners [i].SetActive (false);
-			}
-		}
-
-		if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
+		/*if (charChoices.Length == 0 && GameObject.Find ("SpawnPoint1")) {
 			//StartCoroutine ("DefaultSpawn");
+			//playerCount = 2;
 			charChoices = new int[] {0,0,0,0};
 			SpawnCars ();
-		}
+		}*/
 	}
 
 	public IEnumerator DefaultSpawn () {
@@ -130,6 +127,12 @@ public class GameManager : MonoBehaviour {
                 kda = (double)killSet[i] / (double)deathSet[i];
 			GameObject.Find("kda" + (i + 1)).GetComponent<Text>().text = kda.ToString("#.##");
         }
+		for (int k = playerCount; k < 4; k++) {
+			GameObject.Find ("k" + (k + 1)).SetActive (false);
+			GameObject.Find ("d" + (k + 1)).SetActive (false);
+			GameObject.Find ("p" + (k + 1)).SetActive (false);
+			GameObject.Find ("f" + (k + 1)).SetActive (false);
+		}
     }
 
 
@@ -171,8 +174,38 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine ("GoToScoreboard");
 	}
 
+	public void setPlayerCount(int count)
+	{
+		playerCount = count;
+	}
+
 	public void SpawnCars()
 	{
+		if (GameObject.Find ("2PHud") && GameObject.Find ("4PHud")) {
+			if (playerCount == 2) {
+				hud = GameObject.Find ("2PHud");
+				GameObject.Find ("4PHud").SetActive (false);
+				for (int i = 0; i < 2; i++) {
+					if (GameObject.Find ("P" + (i + 1) + "Group")) {
+						hudCorners [i] = hud.transform.Find ("P" + (i + 1) + "Group").gameObject;
+						hudCorners [i].SetActive (false);
+					}
+				}
+			} else {
+				hud = GameObject.Find ("4PHud");
+				GameObject.Find ("2PHud").SetActive (false);
+
+				for (int i = 0; i < 4; i++) {
+					if (GameObject.Find ("P" + (i + 1) + "Group")) {
+						hudCorners [i] = hud.transform.Find ("P" + (i + 1) + "Group").gameObject;
+						hudCorners [i].SetActive (false);
+					}
+				}
+			}
+		}
+
+		players = new GameObject[playerCount];
+
 		for (int i = 0; i < playerCount; i++) {
 			Transform spawnPoint = GameObject.Find ("SpawnPoint" + (i + 1)).transform;
 			GameObject newCar = (GameObject)Instantiate (carSet[charChoices[i]], spawnPoint.position, spawnPoint.rotation);
@@ -187,7 +220,8 @@ public class GameManager : MonoBehaviour {
 			GameObject.Find("P" + (i + 1) + "Mask").GetComponent<NavPointers>().cam = newCamera;
 			if (charChoices [i] == 3)
 				newCamera.GetComponent<LevelCamera> ().Offset = new Vector3 (0, 12, -13);
-			newCamera.GetComponent<Camera>().rect = new Rect(cameraDimensions[i],new Vector2(0.5f,0.5f));
+			if(playerCount == 2) newCamera.GetComponent<Camera>().rect = new Rect(twoPlayerCameraDimensions[i],new Vector2(1f,0.5f));
+			else newCamera.GetComponent<Camera>().rect = new Rect(fourPlayerCameraDimensions[i],new Vector2(0.5f,0.5f));
 		}
 	}
 
