@@ -443,7 +443,7 @@ ModelImporter:
     4300170: tank:pSphere1_group90
     4300172: group91
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
