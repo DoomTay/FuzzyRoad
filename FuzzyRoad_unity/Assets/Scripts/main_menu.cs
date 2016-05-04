@@ -86,9 +86,10 @@ public class main_menu : MonoBehaviour
         Application.LoadLevel("Controller");
     }
 
-    public void ExitControls ()
+    public void ExitControls()
     {
         Application.LoadLevel("Main_menu2");
+    
     }
 
 	public void IncrementSelection(int index)

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 	//Need to setup a UI display for these.
 	public static GameObject[] players = new GameObject[4];
-	public int maxPoints = 15;
+	public int maxPoints = 50;
     public int score;
 	public GameObject[] carSet;
 	public GameObject camera;
